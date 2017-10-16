@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Testing &mdash; sorator 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sorator 0.9 documentation" href="index.html"/>
+        <link rel="next" title="Collections" href="collections.html"/>
+        <link rel="prev" title="Seeding" href="seeding.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sorator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query_builder.html">Query Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orm.html">ORM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validations.html">Validations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_builder.html">Schema Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seeding.html">Seeding</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#model-factories">Model Factories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-factory-types">Multiple Factory Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-factories-in-tests">Using Factories In Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#persisting-factory-models">Persisting Factory Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-relations-to-models">Adding Relations To Models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sorator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Testing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/testing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="testing">
+<span id="id1"></span><h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="model-factories">
+<span id="modelfactories"></span><h2>Model Factories<a class="headerlink" href="#model-factories" title="Permalink to this headline">¶</a></h2>
+<p>When testing, it is common to need to insert a few records into your database before executing your test.
+Instead of manually specifying the value of each column when you create this test data,
+Orator allows you to define a default set of attributes for each of your models using “factories”:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">Factory</span>
+
+<span class="n">factory</span> <span class="o">=</span> <span class="n">Factory</span><span class="p">()</span>
+
+<span class="nd">@factory.define</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">users_factory</span><span class="p">(</span><span class="n">faker</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">faker</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span>
+        <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">faker</span><span class="o">.</span><span class="n">email</span><span class="p">()</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>Within the function (here <code class="docutils literal"><span class="pre">users_factory</span></code>), which serves as the factory definition,
+you can return the default test values of all attributes on the model.
+The function will receive an instance of the <a class="reference external" href="https://github.com/joke2k/faker">Faker</a> library,
+which allows you to conveniently generate various kinds of random data for testing.</p>
+<div class="section" id="multiple-factory-types">
+<h3>Multiple Factory Types<a class="headerlink" href="#multiple-factory-types" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may wish to have multiple factories for the same model class.
+For example, perhaps you would like to have a factory for “Administrator” users in addition to normal users.
+You can define these factories using the <code class="docutils literal"><span class="pre">define_as</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@factory.define_as</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">admins_factory</span><span class="p">(</span><span class="n">faker</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">faker</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span>
+        <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">faker</span><span class="o">.</span><span class="n">email</span><span class="p">(),</span>
+        <span class="s1">&#39;admin&#39;</span><span class="p">:</span> <span class="bp">True</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>Instead of duplicating all of the attributes from your base user factory,
+you can use the <code class="docutils literal"><span class="pre">raw</span></code> method to retrieve the base attributes.
+Once you have the attributes, simply supplement them with any additional values you require:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@factory.define_as</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">admins_factory</span><span class="p">(</span><span class="n">faker</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+
+    <span class="n">user</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s1">&#39;admin&#39;</span><span class="p">:</span> <span class="bp">True</span>
+    <span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">user</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-factories-in-tests">
+<h3>Using Factories In Tests<a class="headerlink" href="#using-factories-in-tests" title="Permalink to this headline">¶</a></h3>
+<p>Once you have defined your factories, you can use them in your tests or database seed files
+to generate model instances calling the <code class="docutils literal"><span class="pre">Factory</span></code> instance.
+So, let’s take a look at a few examples of creating models.
+First, we’ll use the <code class="docutils literal"><span class="pre">make</span></code> method, which creates models but does not save them to the database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_database</span><span class="p">():</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
+
+    <span class="c1"># Use model in tests</span>
+</pre></div>
+</div>
+<p>If you would like to override some of the default values of your models,
+you can pass keyword arguments to the <code class="docutils literal"><span class="pre">make</span></code> method.
+Only the specified values will be replaced while the rest of the values remain
+set to their default values as specified by the factory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_database</span><span class="p">():</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also create a <code class="docutils literal"><span class="pre">Collection</span></code> of many models or create models of a given type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create 3 User instances</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
+
+<span class="c1"># Create a User &quot;admin&quot; instance</span>
+<span class="n">admin</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
+
+<span class="c1"># Create three User &quot;admin&quot; instances</span>
+<span class="n">admins</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="persisting-factory-models">
+<h3>Persisting Factory Models<a class="headerlink" href="#persisting-factory-models" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">create</span></code> method not only creates the model instances,
+but also saves them to the database using models’ <code class="docutils literal"><span class="pre">save</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_database</span><span class="p">():</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+    <span class="c1"># Use model in tests</span>
+</pre></div>
+</div>
+<p>Again, you can override attributes on the model by passing an array to the <code class="docutils literal"><span class="pre">create</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_database</span><span class="p">():</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-relations-to-models">
+<h3>Adding Relations To Models<a class="headerlink" href="#adding-relations-to-models" title="Permalink to this headline">¶</a></h3>
+<p>You may even persist multiple models to the database.
+In this example, we’ll even attach a relation to the created models.
+When using the <code class="docutils literal"><span class="pre">create</span></code> method to create multiple models, a <code class="docutils literal"><span class="pre">Collection</span></code> instance is returned,
+allowing you to use any of the convenient functions provided by the collection, such as <code class="docutils literal"><span class="pre">each</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">users</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="k">lambda</span> <span class="n">u</span><span class="p">:</span> <span class="n">u</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">factory</span><span class="p">(</span><span class="n">Post</span><span class="p">)</span><span class="o">.</span><span class="n">make</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="collections.html" class="btn btn-neutral float-right" title="Collections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="seeding.html" class="btn btn-neutral" title="Seeding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, shanbay.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

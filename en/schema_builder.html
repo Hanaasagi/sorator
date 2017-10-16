@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Schema Builder &mdash; sorator 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sorator 0.9 documentation" href="index.html"/>
+        <link rel="next" title="Migrations" href="migrations.html"/>
+        <link rel="prev" title="Pagination" href="pagination.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sorator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query_builder.html">Query Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orm.html">ORM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validations.html">Validations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Schema Builder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-and-dropping-tables">Creating and dropping tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-columns">Adding columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#changing-columns">Changing columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#renaming-columns">Renaming columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dropping-columns">Dropping columns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dropping-a-column-from-a-database-table">Dropping a column from a database table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dropping-multiple-columns-from-a-database-table">Dropping multiple columns from a  database table</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#checking-existence">Checking existence</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#checking-for-existence-of-a-table">Checking for existence of a table</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-indexes">Adding indexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dropping-indexes">Dropping indexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#foreign-keys">Foreign keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dropping-timestamps-and-soft-deletes">Dropping timestamps and soft deletes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seeding.html">Seeding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sorator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Schema Builder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/schema_builder.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="schema-builder">
+<span id="schemabuilder"></span><h1>Schema Builder<a class="headerlink" href="#schema-builder" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">Schema</span></code> class provides a database agnostic way of manipulating tables.</p>
+<p>Before getting started, be sure to have configured a <code class="docutils literal"><span class="pre">DatabaseManager</span></code> as seen in the <a class="reference internal" href="basic_usage.html#basicusage"><span class="std std-ref">Basic Usage</span></a> section.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">DatabaseManager</span><span class="p">,</span> <span class="n">Schema</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;mysql&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;database&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">DatabaseManager</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-and-dropping-tables">
+<h2>Creating and dropping tables<a class="headerlink" href="#creating-and-dropping-tables" title="Permalink to this headline">¶</a></h2>
+<p>To create a new database table, the <code class="docutils literal"><span class="pre">create</span></code> method is used:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">increments</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">table</span></code> variable is a <code class="docutils literal"><span class="pre">Blueprint</span></code> instance which can be used to define the new table.</p>
+<p>To rename an existing database table, the <code class="docutils literal"><span class="pre">rename</span></code> method can be used:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">schema</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To specify which connection the schema operation should take place on, use the <code class="docutils literal"><span class="pre">connection</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">connection</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">increments</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To drop a table, you can use the <code class="docutils literal"><span class="pre">drop</span></code> or <code class="docutils literal"><span class="pre">drop_if_exists</span></code> methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">schema</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+
+<span class="n">schema</span><span class="o">.</span><span class="n">drop_if_exists</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-columns">
+<h2>Adding columns<a class="headerlink" href="#adding-columns" title="Permalink to this headline">¶</a></h2>
+<p>To update an existing table, you can use the <code class="docutils literal"><span class="pre">table</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The table builder contains a variety of column types that you may use when building your tables:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">big_increments</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘id’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Incrementing ID using a “big integer” equivalent</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">big_integer</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘votes’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>BIGINT equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">binary</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘data’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>BLOB equivalent to the table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">boolean</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘confirmed’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>BOOLEAN equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">char</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘name’</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal number integer"><span class="pre">4</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>CHAR equivalent with a length</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">date</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘created_on’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>DATE equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">datetime</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘created_at’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>DATETIME equivalent to the table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">decimal</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘amount’</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal number integer"><span class="pre">5</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal number integer"><span class="pre">2</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>DECIMAL equivalent to the table with a precision and scale</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">double</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘column’</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal number integer"><span class="pre">15</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal number integer"><span class="pre">8</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>DOUBLE equivalent to the table with precision, 15 digits in total and 8 after the decimal point</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">enum</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘choices’</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="punctuation"><span class="pre">[</span></span><span class="literal string single"><span class="pre">‘foo’</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal string single"><span class="pre">‘bar’</span></span><span class="punctuation"><span class="pre">])</span></span></code></td>
+<td>ENUM equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">float</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘amount’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>FLOAT equivalent to the table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">increments</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘id’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Incrementing ID to the table (primary key)</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">integer</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘votes’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>INTEGER equivalent to the table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">json</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘options’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>JSON equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">long_text</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘description’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>LONGTEXT equivalent to the table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">medium_integer</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘votes’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>MEDIUMINT equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">medium_text</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘description’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>MEDIUMTEXT equivalent to the table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">morphs</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘taggable’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Adds INTEGER <code class="code python docutils literal"><span class="name"><span class="pre">taggable_id</span></span></code> and STRING <code class="code python docutils literal"><span class="name"><span class="pre">taggable_type</span></span></code></td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">nullable_timestamps</span></span><span class="punctuation"><span class="pre">()</span></span></code></td>
+<td>Same as <code class="code python docutils literal"><span class="name"><span class="pre">timestamps</span></span><span class="punctuation"><span class="pre">()</span></span></code>, except allows NULLs</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">small_integer</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘votes’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>SMALLINT equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">soft_deletes</span></span><span class="punctuation"><span class="pre">()</span></span></code></td>
+<td>Adds <strong>deleted_at</strong> column for soft deletes</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">string</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘email’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>VARCHAR equivalent column</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">string</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘votes’</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal number integer"><span class="pre">100</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>VARCHAR equivalent with a length</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">text</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘description’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>TEXT equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">time</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘sunrise’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>TIME equivalent to the table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">timestamp</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘added_at’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>TIMESTAMP equivalent to the table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">timestamps</span></span><span class="punctuation"><span class="pre">()</span></span></code></td>
+<td>Adds <strong>created_at</strong> and <strong>updated_at</strong> columns</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">nullable</span></span><span class="punctuation"><span class="pre">()</span></span></code></td>
+<td>Designate that the column allows NULL values</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">default</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">value</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Declare a default value for a column</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">unsigned</span></span><span class="punctuation"><span class="pre">()</span></span></code></td>
+<td>Set INTEGER to UNSIGNED</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="changing-columns">
+<h2>Changing columns<a class="headerlink" href="#changing-columns" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you may need to modify an existing column.
+For example, you may wish to increase the size of a string column.
+To do so, you can use the <code class="docutils literal"><span class="pre">change</span></code> method.
+For example, let’s increase the size of the <code class="docutils literal"><span class="pre">name</span></code> column from 25 to 50:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">change</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You could also modify the column to be nullable:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">nullable</span><span class="p">()</span><span class="o">.</span><span class="n">change</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The column change feature, while tested, is still considered in <strong>beta</strong> stage.
+Please report any encountered issue or bug on the <a class="reference external" href="https://github.com/sdispater/orator">Github project</a></p>
+</div>
+</div>
+<div class="section" id="renaming-columns">
+<h2>Renaming columns<a class="headerlink" href="#renaming-columns" title="Permalink to this headline">¶</a></h2>
+<p>To rename a column, you can use use the <code class="docutils literal"><span class="pre">rename_column</span></code> method on the Schema builder:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Prior to <strong>MySQL 5.6.6</strong>, foreign keys are <strong>NOT</strong> automatically updated when renaming columns.
+Therefore, you will need to <strong>drop</strong> the foreign key constraint, <strong>rename</strong> the column and <strong>recreate</strong>
+the constraint to avoid an error.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">drop_foreign</span><span class="p">(</span><span class="s1">&#39;posts_user_id_foreign&#39;</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;author_id&#39;</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">foreign</span><span class="p">(</span><span class="s1">&#39;author_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">references</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">In future versions, Orator <strong>might</strong> handle this automatically.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The rename column feature, while tested, is still considered in <strong>beta</strong> stage (especially for SQLite).
+Please report any encountered issue or bug on the <a class="reference external" href="https://github.com/sdispater/orator">Github project</a></p>
+</div>
+</div>
+<div class="section" id="dropping-columns">
+<h2>Dropping columns<a class="headerlink" href="#dropping-columns" title="Permalink to this headline">¶</a></h2>
+<p>To drop a column, you can use use the <code class="docutils literal"><span class="pre">drop_column</span></code> method on the Schema builder:</p>
+<div class="section" id="dropping-a-column-from-a-database-table">
+<h3>Dropping a column from a database table<a class="headerlink" href="#dropping-a-column-from-a-database-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">drop_column</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dropping-multiple-columns-from-a-database-table">
+<h3>Dropping multiple columns from a  database table<a class="headerlink" href="#dropping-multiple-columns-from-a-database-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">drop_column</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;avatar&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="checking-existence">
+<h2>Checking existence<a class="headerlink" href="#checking-existence" title="Permalink to this headline">¶</a></h2>
+<p>You can easily check for the existence of a table or column using the <code class="docutils literal"><span class="pre">has_table</span></code> and <code class="docutils literal"><span class="pre">has_column</span></code> methods:</p>
+<div class="section" id="checking-for-existence-of-a-table">
+<h3>Checking for existence of a table<a class="headerlink" href="#checking-for-existence-of-a-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">schema</span><span class="o">.</span><span class="n">has_table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+</pre></div>
+</div>
+<p>Checking for existence of a column:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">schema</span><span class="o">.</span><span class="n">has_column</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="adding-indexes">
+<h2>Adding indexes<a class="headerlink" href="#adding-indexes" title="Permalink to this headline">¶</a></h2>
+<p>The schema builder supports several types of indexes. There are two ways to add them.
+First, you may fluently define them on a column definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Or, you may choose to add the indexes on separate lines. Below is a list of all available index types:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">primary</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘id’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Adds a primary key</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">primary</span></span><span class="punctuation"><span class="pre">([</span></span><span class="literal string single"><span class="pre">‘first’</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="literal string single"><span class="pre">‘last’</span></span><span class="punctuation"><span class="pre">])</span></span></code></td>
+<td>Adds composite keys</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">unique</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘email’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Adds a unique index</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">index</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘state’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Adds a basic index</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>MySQL and PostgreSQL have limitations regarding indexes length. So, if the names
+of your columns are too long you can pass the name keyword argument to specify your own index name:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;field_with_really_long_name&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;another_field_with_long_name&#39;</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;my_uniq_idx&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dropping-indexes">
+<h2>Dropping indexes<a class="headerlink" href="#dropping-indexes" title="Permalink to this headline">¶</a></h2>
+<p>To drop an index you must specify the index’s name.
+Orator assigns a reasonable name to the indexes by default.
+Simply concatenate the table name, the names of the column in the index, and the index type.
+Here are some examples:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">drop_primary</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘user_id_primary’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Drops a primary key from the “users” table</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">drop_unique</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘user_email_unique’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Drops a unique index from the “users” table</td>
+</tr>
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">drop_index</span></span><span class="punctuation"><span class="pre">(</span></span><span class="literal string single"><span class="pre">‘geo_state_index’</span></span><span class="punctuation"><span class="pre">)</span></span></code></td>
+<td>Drops a basic index from the “geo” table</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="foreign-keys">
+<h2>Foreign keys<a class="headerlink" href="#foreign-keys" title="Permalink to this headline">¶</a></h2>
+<p>Orator also provides support for adding foreign key constraints to your tables:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">integer</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unsigned</span><span class="p">()</span>
+<span class="n">table</span><span class="o">.</span><span class="n">foreign</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">references</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, we are stating that the <code class="docutils literal"><span class="pre">user_id</span></code>
+column references the <code class="docutils literal"><span class="pre">id</span></code> column on the <code class="docutils literal"><span class="pre">users</span></code> table.
+Make sure to create the foreign key column first!</p>
+<p>You may also specify options for the “on delete” and “on update” actions of the constraint:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">foreign</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">references</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">on_delete</span><span class="p">(</span><span class="s1">&#39;cascade&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To drop a foreign key, you may use the <code class="docutils literal"><span class="pre">drop_foreign</span></code> method.
+A similar naming convention is used for foreign keys as is used for other indexes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">drop_foreign</span><span class="p">(</span><span class="s1">&#39;posts_user_id_foreign&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When creating a foreign key that references an incrementing integer,
+remember to always make the foreign key column <code class="docutils literal"><span class="pre">unsigned</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>By default, SQLite will not honor the <code class="docutils literal"><span class="pre">ON</span> <span class="pre">DELETE</span></code> and <code class="docutils literal"><span class="pre">ON</span> <span class="pre">UPDATE</span></code> statements.
+Orator takes care of the problem by executing the following SQL query:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="n">PRAGMA</span> <span class="n">foreign_keys</span> <span class="o">=</span> <span class="k">ON</span>
+</pre></div>
+</div>
+<p>If you do not want this behavior, just set the configuration parameter <code class="docutils literal"><span class="pre">foreign_keys</span></code> to
+<code class="docutils literal"><span class="pre">False</span></code>:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;sqlite&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;sqlite&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;:memory:&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;foreign_keys&#39;</span><span class="p">:</span> <span class="bp">False</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dropping-timestamps-and-soft-deletes">
+<h2>Dropping timestamps and soft deletes<a class="headerlink" href="#dropping-timestamps-and-soft-deletes" title="Permalink to this headline">¶</a></h2>
+<p>To drop the <code class="docutils literal"><span class="pre">timestamps</span></code>, <code class="docutils literal"><span class="pre">nullable_timestamps</span></code> or <code class="docutils literal"><span class="pre">soft_deletes</span></code> column types,
+you may use the following methods:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">drop_timestamps</span></span><span class="punctuation"><span class="pre">()</span></span></code></td>
+<td>Drops the <strong>created_at</strong> and <strong>deleted_at</strong> columns</td>
+</tr>
+<tr class="row-odd"><td><code class="code python docutils literal"><span class="name"><span class="pre">table</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">drop_soft_deletes</span></span><span class="punctuation"><span class="pre">()</span></span></code></td>
+<td>Drops the <strong>deleted_at</strong> column</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="migrations.html" class="btn btn-neutral float-right" title="Migrations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pagination.html" class="btn btn-neutral" title="Pagination" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, shanbay.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

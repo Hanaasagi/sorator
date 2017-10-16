@@ -1,0 +1,1776 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ORM &mdash; sorator 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sorator 0.9 documentation" href="index.html"/>
+        <link rel="next" title="Validations" href="validations.html"/>
+        <link rel="prev" title="Query Builder" href="query_builder.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sorator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query_builder.html">Query Builder</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ORM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-a-model">Defining a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-all-models">Retrieving all models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-a-record-by-primary-key">Retrieving a record by primary key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-a-model-by-primary-key-or-raise-an-exception">Retrieving a Model by primary key or raise an exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#querying-using-models">Querying using models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aggregates">Aggregates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chunking-results">Chunking Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-the-query-connection">Specifying the query connection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mass-assignment">Mass assignment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-fillable-attributes-on-a-model">Defining fillable attributes on a model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defining-guarded-attributes-on-a-model">Defining guarded attributes on a model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#insert-update-and-delete">Insert, update and delete</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#saving-a-new-model">Saving a new model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-create-method">Using the create method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-a-retrieved-model">Updating a retrieved model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-a-model-and-relationships">Saving a model and relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-an-existing-model">Deleting an existing model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-an-existing-model-by-key">Deleting an existing model by key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-only-the-model-s-timestamps">Updating only the model’s timestamps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#soft-deleting">Soft deleting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#forcing-soft-deleted-models-into-results">Forcing soft deleted models into results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#relationships">Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#one-to-one">One To One</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#defining-a-one-to-one-relationship">Defining a One To One relationship</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#defining-the-inverse-of-the-relation">Defining the inverse of the relation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#one-to-many">One To Many</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Defining the inverse of the relation:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#many-to-many">Many To Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#has-many-through">Has Many Through</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polymorphic-relations">Polymorphic relations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#retrieving-a-polymorphic-relation">Retrieving a polymorphic relation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retrieving-the-owner-of-a-polymorphic-relation">Retrieving the owner of a polymorphic relation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polymorphic-relation-table-structure">Polymorphic relation table structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#many-to-many-polymorphic-relations">Many To Many polymorphic relations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#polymorphic-many-to-many-relation-table-structure">Polymorphic Many To Many Relation Table Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#querying-relations">Querying relations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#querying-relations-when-selection">Querying relations when selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dynamic-properties">Dynamic properties</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#eager-loading">Eager loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#eager-load-constraints">Eager load constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lazy-eager-loading">Lazy eager loading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inserting-related-models">Inserting related models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#associating-models-belongs-to">Associating models (Belongs To)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inserting-related-models-many-to-many">Inserting related models (Many to Many)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#attaching-many-to-many-models">Attaching many to many models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-sync-to-attach-many-to-many-models">Using sync to attach many to many models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-pivot-data-when-syncing">Adding pivot data when syncing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#touching-parent-timestamps">Touching parent timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-pivot-table">Working with pivot table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-records-on-a-pivot-table">Deleting records on a pivot table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-a-record-on-the-pivot-table">Updating a record on the pivot table</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#timestamps">Timestamps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#providing-a-custom-timestamp-format">Providing a custom timestamp format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#query-scopes">Query Scopes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-a-query-scope">Defining a query scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-query-scope">Using a query scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dynamic-scopes">Dynamic scopes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#global-scopes">Global Scopes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-mixins">Using mixins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-scope-directly">Using a scope directly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-callable">Using a callable</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#accessors-mutators">Accessors &amp; mutators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-an-accessor">Defining an accessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defining-a-mutator">Defining a mutator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#date-mutators">Date mutators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attributes-casting">Attributes casting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-events">Model events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cancelling-save-operations-via-events">Cancelling save operations via events</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#model-observers">Model observers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#converting-to-dictionaries-json">Converting to dictionaries / JSON</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#converting-a-model-to-a-dictionary">Converting a model to a dictionary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#converting-a-model-to-json">Converting a model to JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hiding-attributes-from-dictionary-or-json-conversion">Hiding attributes from dictionary or JSON conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#appendable-attributes">Appendable attributes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="validations.html">Validations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_builder.html">Schema Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seeding.html">Seeding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sorator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ORM</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/orm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="orm">
+<span id="id1"></span><h1>ORM<a class="headerlink" href="#orm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The ORM provides a simple ActiveRecord implementation for working with your databases.
+Each database table has a corresponding Model which is used to interact with that table.</p>
+<p>Before getting started, be sure to have configured a <code class="docutils literal"><span class="pre">DatabaseManager</span></code> as seen in the <a class="reference internal" href="basic_usage.html#basicusage"><span class="std std-ref">Basic Usage</span></a> section.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">DatabaseManager</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;mysql&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;database&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">DatabaseManager</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
+<p>To actually get started, you need to tell the ORM to use the configured <code class="docutils literal"><span class="pre">DatabaseManager</span></code> for all models
+inheriting from the <code class="docutils literal"><span class="pre">Model</span></code> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">Model</span>
+
+<span class="n">Model</span><span class="o">.</span><span class="n">set_connection_resolver</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And that’s pretty much it. You can now define your models.</p>
+<div class="section" id="defining-a-model">
+<h3>Defining a Model<a class="headerlink" href="#defining-a-model" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Note that we did not tell the ORM which table to use for the <code class="docutils literal"><span class="pre">User</span></code> model. The plural “snake case” name of the
+class name will be used as the table name unless another name is explicitly specified.
+In this case, the ORM will assume the <code class="docutils literal"><span class="pre">User</span></code> model stores records in the <code class="docutils literal"><span class="pre">users</span></code> table.
+You can specify a custom table by defining a <code class="docutils literal"><span class="pre">__table__</span></code> property on your model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__table__</span> <span class="o">=</span> <span class="s1">&#39;my_users&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The ORM will also assume that each table has a primary key column named <code class="docutils literal"><span class="pre">id</span></code>.
+You can define a <code class="docutils literal"><span class="pre">__primary_key__</span></code> property to override this convention.
+Likewise, you can define a <code class="docutils literal"><span class="pre">__connection__</span></code> property to override the name of the database
+connection that should be used when using the model.</p>
+</div>
+<p>Once a model is defined, you are ready to start retrieving and creating records in your table.
+Note that you will need to place <code class="docutils literal"><span class="pre">updated_at</span></code> and <code class="docutils literal"><span class="pre">created_at</span></code> columns on your table by default.
+If you do not wish to have these columns automatically maintained,
+set the <code class="docutils literal"><span class="pre">__timestamps__</span></code> property on your model to <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="docutils">
+<dt>You can also create a model class with the make:model command::</dt>
+<dd>orator make:model User</dd>
+</dl>
+<p>will create a user.py file in the models directory (the path can be overidden with the -p/–path option).</p>
+<dl class="last docutils">
+<dt>You can also tell Orator to create a migration file with the -m/–migration option::</dt>
+<dd>orator make:model User -m</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="retrieving-all-models">
+<h3>Retrieving all models<a class="headerlink" href="#retrieving-all-models" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-a-record-by-primary-key">
+<h3>Retrieving a record by primary key<a class="headerlink" href="#retrieving-a-record-by-primary-key" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All methods available on the <a class="reference internal" href="query_builder.html#querybuilder"><span class="std std-ref">Query Builder</span></a> are also available when querying models.</p>
+</div>
+</div>
+<div class="section" id="retrieving-a-model-by-primary-key-or-raise-an-exception">
+<h3>Retrieving a Model by primary key or raise an exception<a class="headerlink" href="#retrieving-a-model-by-primary-key-or-raise-an-exception" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes it may be useful to throw an exception if a model is not found.
+You can use the <code class="docutils literal"><span class="pre">find_or_fail</span></code> method for that, which will raise a <code class="docutils literal"><span class="pre">ModelNotFound</span></code> exception.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find_or_fail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">first_or_fail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="querying-using-models">
+<h3>Querying using models<a class="headerlink" href="#querying-using-models" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="aggregates">
+<h3>Aggregates<a class="headerlink" href="#aggregates" title="Permalink to this headline">¶</a></h3>
+<p>You can also use the query builder aggregate functions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you feel limited by the builder’s fluent interface, you can use the <code class="docutils literal"><span class="pre">where_raw</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">where_raw</span><span class="p">(</span><span class="s1">&#39;age &gt; ? and votes = 100&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">])</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="chunking-results">
+<h3>Chunking Results<a class="headerlink" href="#chunking-results" title="Permalink to this headline">¶</a></h3>
+<p>If you need to process a lot of records, you can use the <code class="docutils literal"><span class="pre">chunk</span></code> method to avoid
+consuming a lot of RAM:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">users</span> <span class="ow">in</span> <span class="n">User</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+        <span class="c1"># ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="specifying-the-query-connection">
+<h3>Specifying the query connection<a class="headerlink" href="#specifying-the-query-connection" title="Permalink to this headline">¶</a></h3>
+<p>You can specify which database connection to use when querying a model by using the <code class="docutils literal"><span class="pre">on</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;connection-name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you are using <a class="reference internal" href="basic_usage.html#read-write-connections"><span class="std std-ref">Read / Write connections</span></a>, you can force the query to use the “write” connection
+with the following method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">on_write_connection</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mass-assignment">
+<h2>Mass assignment<a class="headerlink" href="#mass-assignment" title="Permalink to this headline">¶</a></h2>
+<p>When creating a new model, you pass attributes to the model constructor.
+These attributes are then assigned to the model via mass-assignment.
+Though convenient, this can be a serious security concern when passing user input into a model,
+since the user is then free to modify <strong>any</strong> and <strong>all</strong> of the model’s attributes.
+For this reason, all models protect against mass-assignment by default.</p>
+<p>To get started, set the <code class="docutils literal"><span class="pre">__fillable__</span></code> or <code class="docutils literal"><span class="pre">__guarded__</span></code> properties on your model.</p>
+<div class="section" id="defining-fillable-attributes-on-a-model">
+<h3>Defining fillable attributes on a model<a class="headerlink" href="#defining-fillable-attributes-on-a-model" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">__fillable__</span></code> property specifies which attributes can be mass-assigned.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__fillable__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="defining-guarded-attributes-on-a-model">
+<h3>Defining guarded attributes on a model<a class="headerlink" href="#defining-guarded-attributes-on-a-model" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">__guarded__</span></code> is the inverse and acts as “blacklist”.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__guarded__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">When using <code class="docutils literal"><span class="pre">__guarded__</span></code>, you should still never pass any user input directly since
+any attribute that is not guarded can be mass-assigned.</p>
+</div>
+<p>You can also block <strong>all</strong> attributes from mass-assignment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">__guarded__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="insert-update-and-delete">
+<h2>Insert, update and delete<a class="headerlink" href="#insert-update-and-delete" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="saving-a-new-model">
+<h3>Saving a new model<a class="headerlink" href="#saving-a-new-model" title="Permalink to this headline">¶</a></h3>
+<p>To create a new record in the database, simply create a new model instance and call the <code class="docutils literal"><span class="pre">save</span></code> method.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;John&#39;</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Your models will probably have auto-incrementing primary keys. However, if you wish to maintain
+your own primary keys, set the <code class="docutils literal"><span class="pre">__autoincrementing__</span></code> property to <code class="docutils literal"><span class="pre">False</span></code>.</p>
+</div>
+<p>You can also use the <code class="docutils literal"><span class="pre">create</span></code> method to save a model in a single line, but you will need to specify
+either the <code class="docutils literal"><span class="pre">__fillable__</span></code> or <code class="docutils literal"><span class="pre">__guarded__</span></code> property on the model since all models are protected against
+mass-assigment by default.</p>
+<p>After saving or creating a new model with auto-incrementing IDs, you can retrieve the ID by accessing
+the object’s <code class="docutils literal"><span class="pre">id</span></code> attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">inserted_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-the-create-method">
+<h3>Using the create method<a class="headerlink" href="#using-the-create-method" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create a new user in the database</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">)</span>
+
+<span class="c1"># Retrieve the user by attributes, or create it if it does not exist</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">first_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">)</span>
+
+<span class="c1"># Retrieve the user by attributes, or instantiate it if it does not exist</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">first_or_new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-a-retrieved-model">
+<h3>Updating a retrieved model<a class="headerlink" href="#updating-a-retrieved-model" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Foo&#39;</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also run updates as queries against a set of models:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">affected_rows</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="saving-a-model-and-relationships">
+<h3>Saving a model and relationships<a class="headerlink" href="#saving-a-model-and-relationships" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may wish to save not only a model, but also all of its relationships.
+To do so, you can use the <code class="docutils literal"><span class="pre">push</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-an-existing-model">
+<h3>Deleting an existing model<a class="headerlink" href="#deleting-an-existing-model" title="Permalink to this headline">¶</a></h3>
+<p>To delete a model, simply call the <code class="docutils literal"><span class="pre">delete</span></code> model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-an-existing-model-by-key">
+<h3>Deleting an existing model by key<a class="headerlink" href="#deleting-an-existing-model-by-key" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">User</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">User</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also run a delete query on a set of models:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">affected_rows</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-only-the-model-s-timestamps">
+<h3>Updating only the model’s timestamps<a class="headerlink" href="#updating-only-the-model-s-timestamps" title="Permalink to this headline">¶</a></h3>
+<p>If you want to only update the timestamps on a model, you can use the <code class="docutils literal"><span class="pre">touch</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="soft-deleting">
+<h2>Soft deleting<a class="headerlink" href="#soft-deleting" title="Permalink to this headline">¶</a></h2>
+<p>When soft deleting a model, it is not actually removed from your database.
+Instead, a <code class="docutils literal"><span class="pre">deleted_at</span></code> timestamp is set on the record.
+To enable soft deletes for a model, make it inherit from the <code class="docutils literal"><span class="pre">SoftDeletes</span></code> mixin:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">SoftDeletes</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="n">SoftDeletes</span><span class="p">):</span>
+
+    <span class="n">__dates__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;deleted_at&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>To add a <code class="docutils literal"><span class="pre">deleted_at</span></code> column to your table, you may use the <code class="docutils literal"><span class="pre">soft_deletes</span></code> method from a migration (see <a class="reference internal" href="schema_builder.html#schemabuilder"><span class="std std-ref">Schema Builder</span></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">soft_deletes</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, when you call the <code class="docutils literal"><span class="pre">delete</span></code> method on the model, the <code class="docutils literal"><span class="pre">deleted_at</span></code> column will be
+set to the current timestamp. When querying a model that uses soft deletes,
+the “deleted” models will not be included in query results.</p>
+<div class="section" id="forcing-soft-deleted-models-into-results">
+<h3>Forcing soft deleted models into results<a class="headerlink" href="#forcing-soft-deleted-models-into-results" title="Permalink to this headline">¶</a></h3>
+<p>To force soft deleted models to appear in a result set, use the <code class="docutils literal"><span class="pre">with_trashed</span></code> method on the query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">with_trashed</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;account_id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">with_trashed</span></code> method may be used on a defined relationship:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span><span class="o">.</span><span class="n">posts</span><span class="p">()</span><span class="o">.</span><span class="n">with_trashed</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="relationships">
+<h2>Relationships<a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>CHANGED IN VERSION:: 0.7.1</p>
+<p>As of version 0.7.1, the decorator notation is the only one supported.</p>
+<p class="last">The previous notation (via properties) is now deprecated and is no longer supported.
+It will be removed in the next major version.</p>
+</div>
+<p>Orator makes managing and working with relationships easy. It supports many types of relationships:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#onetoone"><span class="std std-ref">One To One</span></a></li>
+<li><a class="reference internal" href="#onetomany"><span class="std std-ref">One To Many</span></a></li>
+<li><a class="reference internal" href="#manytomany"><span class="std std-ref">Many To Many</span></a></li>
+<li><a class="reference internal" href="#hasmanythrough"><span class="std std-ref">Has Many Through</span></a></li>
+<li><a class="reference internal" href="#polymorphicrelations"><span class="std std-ref">Polymorphic relations</span></a></li>
+<li><a class="reference internal" href="#manytomanypolymorphicrelations"><span class="std std-ref">Many To Many polymorphic relations</span></a></li>
+</ul>
+<div class="section" id="one-to-one">
+<span id="onetoone"></span><h3>One To One<a class="headerlink" href="#one-to-one" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="defining-a-one-to-one-relationship">
+<h4>Defining a One To One relationship<a class="headerlink" href="#defining-a-one-to-one-relationship" title="Permalink to this headline">¶</a></h4>
+<p>A one-to-one relationship is a very basic relation. For instance, a <code class="docutils literal"><span class="pre">User</span></code> model might have a <code class="docutils literal"><span class="pre">Phone</span></code>.
+We can define this relation with the ORM:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">has_one</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@has_one</span>
+    <span class="k">def</span> <span class="nf">phone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Phone</span>
+</pre></div>
+</div>
+<p>The return value of the relation is the class of the related model.
+Once the relationship is defined, we can retrieve it using <a class="reference internal" href="#dynamic-properties"><span class="std std-ref">Dynamic properties</span></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">phone</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">phone</span>
+</pre></div>
+</div>
+<p>The SQL performed by this statement will be as follow:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="k">WHERE</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">phones</span> <span class="k">WHERE</span> <span class="n">user_id</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The Orator ORM assumes the foreign key of the relationship based on the model name. In this case,
+<code class="docutils literal"><span class="pre">Phone</span></code> model is assumed to use a <code class="docutils literal"><span class="pre">user_id</span></code> foreign key. If you want to override this convention,
+you can pass a first argument to the <code class="docutils literal"><span class="pre">has_one</span></code> decorator. Furthermore, you may pass a second argument
+to the decorator to specify which local column should be used for the association:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@has_one</span><span class="p">(</span><span class="s1">&#39;foreign_key&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">phone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Phone</span>
+
+<span class="nd">@has_one</span><span class="p">(</span><span class="s1">&#39;foreign_key&#39;</span><span class="p">,</span> <span class="s1">&#39;local_key&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">phone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Phone</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="defining-the-inverse-of-the-relation">
+<h4>Defining the inverse of the relation<a class="headerlink" href="#defining-the-inverse-of-the-relation" title="Permalink to this headline">¶</a></h4>
+<p>To define the inverse of the relationship on the <code class="docutils literal"><span class="pre">Phone</span></code> model, you can use the <code class="docutils literal"><span class="pre">belongs_to</span></code> decorator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">belongs_to</span>
+
+
+<span class="k">class</span> <span class="nc">Phone</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to</span>
+    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">User</span>
+</pre></div>
+</div>
+<p>In the example above, the Orator ORM will look for a <code class="docutils literal"><span class="pre">user_id</span></code> column on the <code class="docutils literal"><span class="pre">phones</span></code> table. You can
+define a different foreign key column, you can pass it as the first argument of the <code class="docutils literal"><span class="pre">belongs_to</span></code> decorator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@belongs_to</span><span class="p">(</span><span class="s1">&#39;local_key&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">User</span>
+</pre></div>
+</div>
+<p>Additionally, you can pass a third parameter which specifies the name of the associated column on the parent table:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@belongs_to</span><span class="p">(</span><span class="s1">&#39;local_key&#39;</span><span class="p">,</span> <span class="s1">&#39;parent_key&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">User</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="one-to-many">
+<span id="onetomany"></span><h3>One To Many<a class="headerlink" href="#one-to-many" title="Permalink to this headline">¶</a></h3>
+<p>An example of a one-to-many relation is a blog post that has many comments:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">has_many</span>
+
+
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@has_many</span>
+    <span class="k">def</span> <span class="nf">comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Comment</span>
+</pre></div>
+</div>
+<p>Now you can access the post’s comments via <a class="reference internal" href="#dynamic-properties"><span class="std std-ref">Dynamic properties</span></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">comments</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">comments</span>
+</pre></div>
+</div>
+<p>Again, you may override the conventional foreign key by passing a first argument to the <code class="docutils literal"><span class="pre">has_many</span></code> decorator.
+And, like the <code class="docutils literal"><span class="pre">has_one</span></code> relation, the local column may also be specified:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@has_many</span><span class="p">(</span><span class="s1">&#39;foreign_key&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Comment</span>
+
+<span class="nd">@has_many</span><span class="p">(</span><span class="s1">&#39;foreign_key&#39;</span><span class="p">,</span> <span class="s1">&#39;local_key&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Comment</span>
+</pre></div>
+</div>
+<div class="section" id="id2">
+<h4>Defining the inverse of the relation:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>To define the inverse of the relationship on the <code class="docutils literal"><span class="pre">Comment</span></code> model, we use the <code class="docutils literal"><span class="pre">belongs_to</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">belongs_to</span>
+
+<span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Post</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="many-to-many">
+<span id="manytomany"></span><h3>Many To Many<a class="headerlink" href="#many-to-many" title="Permalink to this headline">¶</a></h3>
+<p>Many-to-many relations are a more complicated relationship type.
+An example of such a relationship is a user with many roles, where the roles are also shared by other users.
+For example, many users may have the role of “Admin”. Three database tables are needed for this relationship:
+<code class="docutils literal"><span class="pre">users</span></code>, <code class="docutils literal"><span class="pre">roles</span></code>, and <code class="docutils literal"><span class="pre">roles_users</span></code>.
+The <code class="docutils literal"><span class="pre">roles_users</span></code> table is derived from the alphabetical order of the related table names,
+and should have the <code class="docutils literal"><span class="pre">user_id</span></code> and <code class="docutils literal"><span class="pre">role_id</span></code> columns.</p>
+<p>We can define a many-to-many relation using the <code class="docutils literal"><span class="pre">belongs_to_many</span></code> decorator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">belongs_to_many</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to_many</span>
+    <span class="k">def</span> <span class="nf">roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Role</span>
+</pre></div>
+</div>
+<p>Now, we can retrieve the roles through the <code class="docutils literal"><span class="pre">User</span></code> model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">roles</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">roles</span>
+</pre></div>
+</div>
+<p>If you want to use an unconventional table name for your pivot table, you can pass it as the first argument
+to the <code class="docutils literal"><span class="pre">belongs_to_many</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@belongs_to_many</span><span class="p">(</span><span class="s1">&#39;user_role&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Role</span>
+</pre></div>
+</div>
+<p>You can also override the conventional associated keys:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@belongs_to_many</span><span class="p">(</span><span class="s1">&#39;user_role&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;foo_id&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Role</span>
+</pre></div>
+</div>
+<p>Of course, you also can define the inverse of the relationship on the <code class="docutils literal"><span class="pre">Role</span></code> model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Role</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to_many</span>
+    <span class="k">def</span> <span class="nf">users</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">User</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="has-many-through">
+<span id="hasmanythrough"></span><h3>Has Many Through<a class="headerlink" href="#has-many-through" title="Permalink to this headline">¶</a></h3>
+<p>The “has many through” relation provides a convenient short-cut
+for accessing distant relations via an intermediate relation.
+For example, a <code class="docutils literal"><span class="pre">Country</span></code> model might have many <code class="docutils literal"><span class="pre">Post</span></code> through a <code class="docutils literal"><span class="pre">User</span></code> model.
+The tables for this relationship would look like this:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">countries</span>
+    <span class="l l-Scalar l-Scalar-Plain">id - integer</span>
+    <span class="l l-Scalar l-Scalar-Plain">name - string</span>
+
+<span class="l l-Scalar l-Scalar-Plain">users</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">id - integer</span>
+    <span class="l l-Scalar l-Scalar-Plain">country_id - integer</span>
+    <span class="l l-Scalar l-Scalar-Plain">name - string</span>
+
+<span class="l l-Scalar l-Scalar-Plain">posts</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">id - integer</span>
+    <span class="l l-Scalar l-Scalar-Plain">user_id - integer</span>
+    <span class="l l-Scalar l-Scalar-Plain">title - string</span>
+</pre></div>
+</div>
+<p>Even though the <code class="docutils literal"><span class="pre">posts</span></code> table does not contain a <code class="docutils literal"><span class="pre">country_id</span></code> column, the <code class="docutils literal"><span class="pre">has_many_through</span></code> relation
+will allow access to a country’s posts via <code class="docutils literal"><span class="pre">country.posts</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">has_many_through</span>
+
+
+<span class="k">class</span> <span class="nc">Country</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@has_many_through</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">posts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Post</span>
+</pre></div>
+</div>
+<p>If you want to manually specify the keys of the relationship,
+you can pass them as the second and third arguments to the decorator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@has_many_through</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="s1">&#39;country_id&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">posts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Post</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="polymorphic-relations">
+<span id="polymorphicrelations"></span><h3>Polymorphic relations<a class="headerlink" href="#polymorphic-relations" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.3.</span></p>
+</div>
+<p>Polymorphic relations allow a model to belong to more than one other model, on a single association.
+For example, you might have a <code class="docutils literal"><span class="pre">Photo</span></code> model that belongs to either a <code class="docutils literal"><span class="pre">Staff</span></code> model or an <code class="docutils literal"><span class="pre">Order</span></code> model.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">morph_to</span><span class="p">,</span> <span class="n">morph_many</span>
+
+
+<span class="k">class</span> <span class="nc">Photo</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@morph_to</span>
+    <span class="k">def</span> <span class="nf">imageable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span>
+
+<span class="k">class</span> <span class="nc">Staff</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@morph_many</span><span class="p">(</span><span class="s1">&#39;imageable&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">photos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Photo</span>
+
+<span class="k">class</span> <span class="nc">Order</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@morph_many</span><span class="p">(</span><span class="s1">&#39;imageable&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">photos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Photo</span>
+</pre></div>
+</div>
+<div class="section" id="retrieving-a-polymorphic-relation">
+<h4>Retrieving a polymorphic relation<a class="headerlink" href="#retrieving-a-polymorphic-relation" title="Permalink to this headline">¶</a></h4>
+<p>Now, we can retrieve the photos for either a staff member or an order:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">staff</span> <span class="o">=</span> <span class="n">Staff</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">photo</span> <span class="ow">in</span> <span class="n">staff</span><span class="o">.</span><span class="n">photos</span><span class="p">:</span>
+    <span class="c1"># ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-the-owner-of-a-polymorphic-relation">
+<h4>Retrieving the owner of a polymorphic relation<a class="headerlink" href="#retrieving-the-owner-of-a-polymorphic-relation" title="Permalink to this headline">¶</a></h4>
+<p>You can also, and this is where polymorphic relations shine, access the staff or
+order model from the <code class="docutils literal"><span class="pre">Photo</span></code> model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">photo</span> <span class="o">=</span> <span class="n">Photo</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">imageable</span> <span class="o">=</span> <span class="n">photo</span><span class="o">.</span><span class="n">imageable</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">imageable</span></code> relation on the <code class="docutils literal"><span class="pre">Photo</span></code> model will return either a <code class="docutils literal"><span class="pre">Staff</span></code> or <code class="docutils literal"><span class="pre">Order</span></code> instance,
+depending on which type of model owns the photo.</p>
+</div>
+<div class="section" id="polymorphic-relation-table-structure">
+<h4>Polymorphic relation table structure<a class="headerlink" href="#polymorphic-relation-table-structure" title="Permalink to this headline">¶</a></h4>
+<p>To help understand how this works, let’s explore the database structure for a polymorphic relation:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>staff
+    id - integer
+    name - string
+
+orders
+    id - integer
+    price - integer
+
+photos
+    id - integer
+    path - string
+    imageable_id - integer
+    imageable_type - string
+</pre></div>
+</div>
+<p>The key fields to notice here are the <code class="docutils literal"><span class="pre">imageable_id</span></code> and <code class="docutils literal"><span class="pre">imageable_type</span></code> on the <code class="docutils literal"><span class="pre">photos</span></code> table.
+The ID will contain the ID value of, in this example, the owning staff or order,
+while the type will contain the class name of the owning model.
+This is what allows the ORM to determine which type of owning model
+to return when accessing the <code class="docutils literal"><span class="pre">imageable</span></code> relation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When accessing or loading the relation, Orator will retrieve the related class using
+the <code class="docutils literal"><span class="pre">imageable_type</span></code> column value.</p>
+<p><strong>By default</strong> it will assume this value is the table name of the related model,
+so in this example <code class="docutils literal"><span class="pre">staff</span></code> or <code class="docutils literal"><span class="pre">orders</span></code>. If you want to override this convention, just add the <code class="docutils literal"><span class="pre">__morph_name__</span></code>
+attribute to the related class:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Order</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__morph_name__</span> <span class="o">=</span> <span class="s1">&#39;order&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="many-to-many-polymorphic-relations">
+<span id="manytomanypolymorphicrelations"></span><h3>Many To Many polymorphic relations<a class="headerlink" href="#many-to-many-polymorphic-relations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="polymorphic-many-to-many-relation-table-structure">
+<h4>Polymorphic Many To Many Relation Table Structure<a class="headerlink" href="#polymorphic-many-to-many-relation-table-structure" title="Permalink to this headline">¶</a></h4>
+<p>In addition to traditional polymorphic relations, you can also specify many-to-many polymorphic relations.
+For example, a blog <code class="docutils literal"><span class="pre">Post</span></code> and <code class="docutils literal"><span class="pre">Video</span></code> model could share a polymorphic relation to a <code class="docutils literal"><span class="pre">Tag</span></code> model.
+First, let’s examine the table structure:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>posts
+    id - integer
+    name - string
+
+videos
+    id - integer
+    name - string
+
+tags
+    id - integer
+    name - string
+
+taggables
+    tag_id - integer
+    taggable_id - integer
+    taggable_type - string
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">Post</span></code> and <code class="docutils literal"><span class="pre">Video</span></code> model will both have a <code class="docutils literal"><span class="pre">morph_to_many</span></code> relationship via a <code class="docutils literal"><span class="pre">tags</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@morph_to_many</span><span class="p">(</span><span class="s1">&#39;taggable&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Tag</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">Tag</span></code> model can define a method for each of its relationships:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Tag</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@morphed_by_many</span><span class="p">(</span><span class="s1">&#39;taggable&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">posts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Post</span>
+
+    <span class="nd">@morphed_by_many</span><span class="p">(</span><span class="s1">&#39;taggable&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">videos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Video</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you want to apply permanent query conditions on your relationships you can
+do so by returning a Builder instance instead of a Model subclass.</p>
+<p>For example, let’s say you want all comments of a user to be ordered by date
+of creation in descending order and only the id and title columns of each comment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@has_many</span>
+    <span class="k">def</span> <span class="nf">comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">Comment</span>
+                <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;desc&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p class="last"><em>Don’t forget to include the column you’re joining on.</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="querying-relations">
+<h2>Querying relations<a class="headerlink" href="#querying-relations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="querying-relations-when-selection">
+<h3>Querying relations when selection<a class="headerlink" href="#querying-relations-when-selection" title="Permalink to this headline">¶</a></h3>
+<p>When accessing the records for a model, you may wish to limit the results based on the exeistence
+of a relationship. For example, you may wish to retrieve all blog posts that have at least one comment.
+To actually do so, you can use the <code class="docutils literal"><span class="pre">has</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This would execute the following SQL query:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">posts</span>
+<span class="k">WHERE</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">comments</span>
+    <span class="k">WHERE</span> <span class="n">comments</span><span class="p">.</span><span class="n">post_id</span> <span class="o">=</span> <span class="n">posts</span><span class="p">.</span><span class="n">id</span>
+<span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>You can also specify an operator and a count:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This would execute:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">posts</span>
+<span class="k">WHERE</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">comments</span>
+    <span class="k">WHERE</span> <span class="n">comments</span><span class="p">.</span><span class="n">post_id</span> <span class="o">=</span> <span class="n">posts</span><span class="p">.</span><span class="n">id</span>
+<span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>Nested <code class="docutils literal"><span class="pre">has</span></code> statements can also be constructed using “dot” notation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;comments.votes&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>And the corresponding SQL query:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">posts</span>
+<span class="k">WHERE</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">comments</span>
+    <span class="k">WHERE</span> <span class="n">comments</span><span class="p">.</span><span class="n">post_id</span> <span class="o">=</span> <span class="n">posts</span><span class="p">.</span><span class="n">id</span>
+    <span class="k">AND</span> <span class="p">(</span>
+        <span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">votes</span>
+        <span class="k">WHERE</span> <span class="n">votes</span><span class="p">.</span><span class="n">comment_id</span> <span class="o">=</span> <span class="n">comments</span><span class="p">.</span><span class="n">id</span>
+    <span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+<span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>If you need even more power, you can use the <code class="docutils literal"><span class="pre">where_has</span></code> and <code class="docutils literal"><span class="pre">or_where_has</span></code> methods
+to put “where” conditions on your has queries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">where_has</span><span class="p">(</span>
+    <span class="s1">&#39;comments&#39;</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">q</span><span class="p">:</span> <span class="n">q</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;foo%&#39;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dynamic-properties">
+<span id="id3"></span><h3>Dynamic properties<a class="headerlink" href="#dynamic-properties" title="Permalink to this headline">¶</a></h3>
+<p>The Orator ORM allows you to access your relations via dynamic properties.
+It will automatically load the relationship for you. It will then be accessible via
+a dynamic property by the same name as the relation. For example, with the following model <code class="docutils literal"><span class="pre">Post</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Phone</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to</span>
+    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">User</span>
+
+<span class="n">phone</span> <span class="o">=</span> <span class="n">Phone</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then print the user’s email like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">phone</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, for one-to-many relationships:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@has_many</span>
+    <span class="k">def</span> <span class="nf">comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Comment</span>
+
+<span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then access the post’s comments like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">comments</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">comments</span>
+</pre></div>
+</div>
+<p>If you need to add further constraints to which comments are retrieved,
+you may call the <code class="docutils literal"><span class="pre">comments</span></code> method and continue chaining conditions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">comments</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">comments</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Relationships that return many results will return an instance of the <code class="docutils literal"><span class="pre">Collection</span></code> class.</p>
+</div>
+</div>
+</div>
+<div class="section" id="eager-loading">
+<h2>Eager loading<a class="headerlink" href="#eager-loading" title="Permalink to this headline">¶</a></h2>
+<p>Eager loading exists to alleviate the N + 1 query problem. For example, consider a <code class="docutils literal"><span class="pre">Book</span></code> that is related
+to an <code class="docutils literal"><span class="pre">Author</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to</span>
+    <span class="k">def</span> <span class="nf">author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Author</span>
+</pre></div>
+</div>
+<p>Now, consider the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">book</span> <span class="ow">in</span> <span class="n">Book</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This loop will execute 1 query to retrieve all the books on the table, then another query for each book
+to retrieve the author. So, if we have 25 books, this loop will run 26 queries.</p>
+<p>To drastically reduce the number of queries you can use eager loading. The relationships that should be
+eager loaded can be specified via the <code class="docutils literal"><span class="pre">with_</span></code> method.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">book</span> <span class="ow">in</span> <span class="n">Book</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this loop, only two queries will be executed:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">books</span>
+
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">authors</span> <span class="k">WHERE</span> <span class="n">id</span> <span class="k">IN</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">...)</span>
+</pre></div>
+</div>
+<p>You can eager load multiple relationships at one time:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">books</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can even eager load nested relationships:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">books</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="s1">&#39;author.contacts&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example, the <code class="docutils literal"><span class="pre">author</span></code> relationship will be eager loaded as well as the author’s <code class="docutils literal"><span class="pre">contacts</span></code>
+relation.</p>
+<div class="section" id="eager-load-constraints">
+<h3>Eager load constraints<a class="headerlink" href="#eager-load-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may wish to eager load a relationship but also specify a condition for the eager load.
+Here’s an example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">with_</span><span class="p">({</span>
+    <span class="s1">&#39;posts&#39;</span><span class="p">:</span> <span class="n">Post</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%f</span><span class="s1">irst%&#39;</span><span class="p">)</span>
+<span class="p">})</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example, we’re eager loading the user’s posts only if the post’s title contains the word “first”.</p>
+<p>When passing a query as a constraint, only the where clause is supported, if you want to be more specific
+you can use a callback:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">with_</span><span class="p">({</span>
+    <span class="s1">&#39;posts&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">:</span> <span class="n">q</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%f</span><span class="s1">irst%&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;desc&#39;</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lazy-eager-loading">
+<h3>Lazy eager loading<a class="headerlink" href="#lazy-eager-loading" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible to eagerly load related models directly from an already existing model collection.
+This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">books</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="n">books</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also pass conditions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">books</span><span class="o">.</span><span class="n">load</span><span class="p">({</span>
+   <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">Author</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%f</span><span class="s1">oo%&#39;</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="inserting-related-models">
+<h2>Inserting related models<a class="headerlink" href="#inserting-related-models" title="Permalink to this headline">¶</a></h2>
+<p>You will often need to insert new related models, like inserting a new comment for a post.
+Instead of manually setting the <code class="docutils literal"><span class="pre">post_id</span></code> foreign key, you can insert the new comment from its parent <code class="docutils literal"><span class="pre">Post</span></code> model
+directly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">comment</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;A new comment&#39;</span><span class="p">)</span>
+
+<span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">comment</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">comments</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you need to save multiple comments:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">comments</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Comment</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Comment 1&#39;</span><span class="p">),</span>
+    <span class="n">Comment</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Comment 2&#39;</span><span class="p">),</span>
+    <span class="n">Comment</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Comment 3&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">post</span><span class="o">.</span><span class="n">comments</span><span class="p">()</span><span class="o">.</span><span class="n">save_many</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="associating-models-belongs-to">
+<h3>Associating models (Belongs To)<a class="headerlink" href="#associating-models-belongs-to" title="Permalink to this headline">¶</a></h3>
+<p>When updatings a <code class="docutils literal"><span class="pre">belongs_to</span></code> relationship, you can use the associate method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">account</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">account</span><span class="p">()</span><span class="o">.</span><span class="n">associate</span><span class="p">(</span><span class="n">account</span><span class="p">)</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inserting-related-models-many-to-many">
+<h3>Inserting related models (Many to Many)<a class="headerlink" href="#inserting-related-models-many-to-many" title="Permalink to this headline">¶</a></h3>
+<p>You can also insert related models when working with many-to-many relationship.
+For example, with <code class="docutils literal"><span class="pre">User</span></code> and <code class="docutils literal"><span class="pre">Roles</span></code> models:</p>
+<div class="section" id="attaching-many-to-many-models">
+<h4>Attaching many to many models<a class="headerlink" href="#attaching-many-to-many-models" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">role</span> <span class="o">=</span> <span class="n">Roles</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+
+<span class="c1"># or</span>
+<span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also pass a dictionary of attributes that should be stored on the pivot table for the relation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;expires&#39;</span><span class="p">:</span> <span class="n">expires</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>The opposite of <code class="docutils literal"><span class="pre">attach</span></code> is <code class="docutils literal"><span class="pre">detach</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Both <code class="docutils literal"><span class="pre">attach</span></code> and <code class="docutils literal"><span class="pre">detach</span></code> also take list of IDs as input:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">attach</span><span class="p">([{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;attribute1&#39;</span><span class="p">:</span> <span class="s1">&#39;value1&#39;</span><span class="p">}},</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-sync-to-attach-many-to-many-models">
+<h4>Using sync to attach many to many models<a class="headerlink" href="#using-sync-to-attach-many-to-many-models" title="Permalink to this headline">¶</a></h4>
+<p>You can also use the <code class="docutils literal"><span class="pre">sync</span></code> method to attach related models. The <code class="docutils literal"><span class="pre">sync</span></code> method accepts a list of IDs
+to place on the pivot table. After this operation, only the IDs in the list will be on the pivot table:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">sync</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-pivot-data-when-syncing">
+<h4>Adding pivot data when syncing<a class="headerlink" href="#adding-pivot-data-when-syncing" title="Permalink to this headline">¶</a></h4>
+<p>You can also associate other pivot table values with the given IDs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">sync</span><span class="p">([{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;expires&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}}])</span>
+</pre></div>
+</div>
+<p>Sometimes you might want to create a new related model and attach it in a single command.
+For that, you can use the save method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">role</span> <span class="o">=</span> <span class="n">Role</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Editor&#39;</span><span class="p">)</span>
+
+<span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also pass attributes to place on the pivot table:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;expires&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="touching-parent-timestamps">
+<h2>Touching parent timestamps<a class="headerlink" href="#touching-parent-timestamps" title="Permalink to this headline">¶</a></h2>
+<p>When a model <code class="docutils literal"><span class="pre">belongs_to</span></code> another model, like a <code class="docutils literal"><span class="pre">Comment</span></code> belonging to a <code class="docutils literal"><span class="pre">Post</span></code>, it is often helpful
+to update the parent’s timestamp when the chil model is updated. For instance, when a <code class="docutils literal"><span class="pre">Comment</span></code> model is updated,
+you may want to automatically touch the <code class="docutils literal"><span class="pre">updated_at</span></code> timestamp of the owning <code class="docutils literal"><span class="pre">Post</span></code>. For this to actually happen,
+you just have to add a <code class="docutils literal"><span class="pre">__touches__</span></code> property containing the names of the relationships:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__touches__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">]</span>
+
+    <span class="nd">@belongs_to</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Post</span>
+</pre></div>
+</div>
+<p>Now, when you update a <code class="docutils literal"><span class="pre">Comment</span></code>, the owning <code class="docutils literal"><span class="pre">Post</span></code> will have its <code class="docutils literal"><span class="pre">updated_at</span></code> column updated.</p>
+</div>
+<div class="section" id="working-with-pivot-table">
+<h2>Working with pivot table<a class="headerlink" href="#working-with-pivot-table" title="Permalink to this headline">¶</a></h2>
+<p>Working with many-to-many reationships requires the presence of an intermediate table. Orator makes it easy to
+interact with this table. Let’s take the <code class="docutils literal"><span class="pre">User</span></code> and <code class="docutils literal"><span class="pre">Roles</span></code> models and see how you can access the <code class="docutils literal"><span class="pre">pivot</span></code> table:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">role</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that each retrieved <code class="docutils literal"><span class="pre">Role</span></code> model is automatically assigned a <code class="docutils literal"><span class="pre">pivot</span></code> attribute. This attribute contains e model
+instance representing the intermediate table, and can be used as any other model.</p>
+<p>By default, only the keys will be present on the <code class="docutils literal"><span class="pre">pivot</span></code> object. If your pivot table contains extra attributes,
+you must specify them when defining the relationship:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to_many</span><span class="p">(</span><span class="n">with_pivot</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Role</span>
+</pre></div>
+</div>
+<p>Now the <code class="docutils literal"><span class="pre">foo</span></code> and <code class="docutils literal"><span class="pre">bar</span></code> attributes will be accessible on the <code class="docutils literal"><span class="pre">pivot</span></code> object for the <code class="docutils literal"><span class="pre">Role</span></code> model.</p>
+<p>If you want your pivot table to have automatically maintained <code class="docutils literal"><span class="pre">created_at</span></code> and <code class="docutils literal"><span class="pre">updated_at</span></code> timestamps,
+use the <code class="docutils literal"><span class="pre">with_timestamps</span></code> keyword argument on the relationship definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@belongs_to_many</span><span class="p">(</span><span class="n">with_timestamps</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Role</span>
+</pre></div>
+</div>
+<div class="section" id="deleting-records-on-a-pivot-table">
+<h3>Deleting records on a pivot table<a class="headerlink" href="#deleting-records-on-a-pivot-table" title="Permalink to this headline">¶</a></h3>
+<p>To delete all records on the pivot table for a model, you can use the <code class="docutils literal"><span class="pre">detach</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-a-record-on-the-pivot-table">
+<h3>Updating a record on the pivot table<a class="headerlink" href="#updating-a-record-on-the-pivot-table" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may need to update your pivot table, but not detach it.
+If you wish to update your pivot table in place you may use <code class="docutils literal"><span class="pre">update_existing_pivot</span></code> method like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">roles</span><span class="p">()</span><span class="o">.</span><span class="n">update_existing_pivot</span><span class="p">(</span><span class="n">role_id</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="timestamps">
+<h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
+<p>By default, the ORM will maintain the <code class="docutils literal"><span class="pre">created_at</span></code> and <code class="docutils literal"><span class="pre">updated_at</span></code> columns on your database table
+automatically. Simply add these <code class="docutils literal"><span class="pre">timestamp</span></code> columns to your table. If you do not wish for the ORM to maintain
+these columns, just add the <code class="docutils literal"><span class="pre">__timestamps__</span></code> property:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__timestamps__</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Changed in version 0.8.0:</p>
+<p>Orator supports maintaining only one timestamp column, like so:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__timestamps__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="providing-a-custom-timestamp-format">
+<h3>Providing a custom timestamp format<a class="headerlink" href="#providing-a-custom-timestamp-format" title="Permalink to this headline">¶</a></h3>
+<p>If you whish to customize the format of your timestamps (the default is the ISO Format) that will be returned when using the <code class="docutils literal"><span class="pre">serialize</span></code>
+or the <code class="docutils literal"><span class="pre">to_json</span></code> methods, you can override the <code class="docutils literal"><span class="pre">get_date_format</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_date_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;DD-MM-YY&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="query-scopes">
+<h2>Query Scopes<a class="headerlink" href="#query-scopes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="defining-a-query-scope">
+<h3>Defining a query scope<a class="headerlink" href="#defining-a-query-scope" title="Permalink to this headline">¶</a></h3>
+<p>Scopes allow you to easily re-use query logic in your models.
+To define a scope, simply use the <code class="docutils literal"><span class="pre">scope</span></code> decorator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">scope</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@scope</span>
+    <span class="k">def</span> <span class="nf">popular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="nd">@scope</span>
+    <span class="k">def</span> <span class="nf">women</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">where_gender</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-a-query-scope">
+<h3>Using a query scope<a class="headerlink" href="#using-a-query-scope" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">popular</span><span class="p">()</span><span class="o">.</span><span class="n">women</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dynamic-scopes">
+<h3>Dynamic scopes<a class="headerlink" href="#dynamic-scopes" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may wish to define a scope that accepts parameters.
+Just add your parameters to your scope function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@scope</span>
+    <span class="k">def</span> <span class="nf">of_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">where_type</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then pass the parameter into the scope call:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">of_type</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="global-scopes">
+<h2>Global Scopes<a class="headerlink" href="#global-scopes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-mixins">
+<h3>Using mixins<a class="headerlink" href="#using-mixins" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may wish to define a scope that applies to all queries performed on a model.
+In essence, this is how Orator’s own “soft delete” feature works.
+Global scopes can be defined using a combination of mixins and an implementation of the <code class="docutils literal"><span class="pre">Scope</span></code> class.</p>
+<p>First, let’s define a mixin. For this example, we’ll use the <code class="docutils literal"><span class="pre">SoftDeletes</span></code> that ships with Orator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">SoftDeletingScope</span>
+
+
+<span class="k">class</span> <span class="nc">SoftDeletes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">boot_soft_deletes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_class</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Boot the soft deleting mixin for a model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_class</span><span class="o">.</span><span class="n">add_global_scope</span><span class="p">(</span><span class="n">SoftDeletingScope</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>If an Orator model inherits from a mixin that has a method matching the <code class="docutils literal"><span class="pre">boot_name_of_trait</span></code>
+naming convention, that mixin method will be called when the Orator model is booted,
+giving you an opportunity to register a global scope, or do anything else you want.
+A scope must be an instance of the <code class="docutils literal"><span class="pre">Scope</span></code> class, which specify an <code class="docutils literal"><span class="pre">apply</span></code> method.</p>
+<p>The apply method receives an <code class="docutils literal"><span class="pre">Builder</span></code> query builder object and the <code class="docutils literal"><span class="pre">Model</span></code> it’s applied to,
+and is responsible for adding any additional <code class="docutils literal"><span class="pre">where</span></code> clauses that the scope wishes to add.
+So, for our <code class="docutils literal"><span class="pre">SoftDeletingScope</span></code>, it would look something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">Scope</span>
+
+
+<span class="k">class</span> <span class="nc">SoftDeletingScope</span><span class="p">(</span><span class="n">Scope</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply the scope to a given query builder.</span>
+
+<span class="sd">        :param builder: The query builder</span>
+<span class="sd">        :type builder: orator.orm.builder.Builder</span>
+
+<span class="sd">        :param model: The model</span>
+<span class="sd">        :type model: orator.orm.Model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">where_null</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_qualified_deleted_at_column</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-a-scope-directly">
+<h3>Using a scope directly<a class="headerlink" href="#using-a-scope-directly" title="Permalink to this headline">¶</a></h3>
+<p>Let’s take the example of an <code class="docutils literal"><span class="pre">ActiveScope</span></code> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">Scope</span>
+
+
+<span class="k">class</span> <span class="nc">ActiveScope</span><span class="p">(</span><span class="n">Scope</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can now override the <code class="docutils literal"><span class="pre">_boot()</span></code> method of the model to apply the scope:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_boot</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">add_global_scope</span><span class="p">(</span><span class="n">ActiveScope</span><span class="p">())</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">_boot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-a-callable">
+<h3>Using a callable<a class="headerlink" href="#using-a-callable" title="Permalink to this headline">¶</a></h3>
+<p>Global scopes can also be set using callables:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_boot</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">add_global_scope</span><span class="p">(</span><span class="s1">&#39;active_scope&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">query</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">add_global_scope</span><span class="p">(</span><span class="k">lambda</span> <span class="n">query</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">_boot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As you can see, you can directly pass a function or specify an alias for the global scope to remove it
+more easily later on.</p>
+</div>
+</div>
+<div class="section" id="accessors-mutators">
+<h2>Accessors &amp; mutators<a class="headerlink" href="#accessors-mutators" title="Permalink to this headline">¶</a></h2>
+<p>Orator provides a convenient way to transform your model attributes when getting or setting them.</p>
+<div class="section" id="defining-an-accessor">
+<h3>Defining an accessor<a class="headerlink" href="#defining-an-accessor" title="Permalink to this headline">¶</a></h3>
+<p>Simply use the <code class="docutils literal"><span class="pre">accessor</span></code> decorator on your model to declare an accessor:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">accessor</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@accessor</span>
+    <span class="k">def</span> <span class="nf">first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">first_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_attribute</span><span class="p">(</span><span class="s1">&#39;first_name&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">first_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">first_name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+<p>In the example above, the <code class="docutils literal"><span class="pre">first_name</span></code> column has an accessor.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The name of the decorated function <strong>must</strong> match the name of the column being accessed.</p>
+</div>
+</div>
+<div class="section" id="defining-a-mutator">
+<h3>Defining a mutator<a class="headerlink" href="#defining-a-mutator" title="Permalink to this headline">¶</a></h3>
+<p>Mutators are declared in a similar fashion:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">mutator</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@mutator</span>
+    <span class="k">def</span> <span class="nf">first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_raw_attribute</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If the column being mutated already has an accessor, you can use it has a mutator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">accessor</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@accessor</span>
+    <span class="k">def</span> <span class="nf">first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">first_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_attribute</span><span class="p">(</span><span class="s1">&#39;first_name&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">first_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">first_name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="nd">@first_name.mutator</span>
+    <span class="k">def</span> <span class="nf">set_first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_raw_attribute</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The inverse is also possible:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">mutator</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@mutator</span>
+    <span class="k">def</span> <span class="nf">first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_raw_attribute</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+    <span class="nd">@first_name.accessor</span>
+    <span class="k">def</span> <span class="nf">get_first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">first_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_attribute</span><span class="p">(</span><span class="s1">&#39;first_name&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">first_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">first_name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="date-mutators">
+<h2>Date mutators<a class="headerlink" href="#date-mutators" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Changed in version 0.9:
+Orator no longer officially supports Arrow instances as datetimes.</p>
+<p class="last">It will now only supports Pendulum instances which are a drop-in replacement
+for the standard datetime class.</p>
+</div>
+<p>By default, the ORM will convert the <code class="docutils literal"><span class="pre">created_at</span></code> and <code class="docutils literal"><span class="pre">updated_at</span></code> columns to instances of <a class="reference external" href="https://pendulum.eustace.io/">Pendulum</a>,
+which eases date and datetime manipulation while behaving pretty much like the native Python date and datetime.</p>
+<p>You can customize which fields are automatically mutated, by either adding them with the <code class="docutils literal"><span class="pre">__dates__</span></code> property or
+by completely overriding the <code class="docutils literal"><span class="pre">get_dates</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__dates__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;synchronized_at&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_dates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>When a column is considered a date, you can set its value to a UNIX timestamp, a date string <code class="docutils literal"><span class="pre">YYYY-MM-DD</span></code>,
+a datetime string, a native <code class="docutils literal"><span class="pre">date</span></code> or <code class="docutils literal"><span class="pre">datetime</span></code> and of course an <code class="docutils literal"><span class="pre">Pendulum</span></code> instance.</p>
+<p>To completely disable date mutations, simply return an empty list from the <code class="docutils literal"><span class="pre">get_dates</span></code> method.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_dates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="attributes-casting">
+<h2>Attributes casting<a class="headerlink" href="#attributes-casting" title="Permalink to this headline">¶</a></h2>
+<p>If you have some attributes that you want to always convert to another data-type,
+you may add the attribute to the <code class="docutils literal"><span class="pre">__casts__</span></code> property of your model.
+Otherwise, you will have to define a mutator for each of the attributes, which can be time consuming.
+Here is an example of using the <code class="docutils literal"><span class="pre">__casts__</span></code> property:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">__casts__</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;is_admin&#39;</span><span class="p">:</span> <span class="s1">&#39;bool&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now the <code class="docutils literal"><span class="pre">is_admin</span></code> attribute will always be cast to a boolean when you access it,
+even if the underlying value is stored in the database as an integer.
+Other supported cast types are: <code class="docutils literal"><span class="pre">int</span></code>, <code class="docutils literal"><span class="pre">float</span></code>, <code class="docutils literal"><span class="pre">str</span></code>, <code class="docutils literal"><span class="pre">bool</span></code>, <code class="docutils literal"><span class="pre">dict</span></code>, <code class="docutils literal"><span class="pre">list</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">dict</span></code> cast is particularly useful for working with columns that are stored as serialized JSON.
+For example, if your database has a TEXT type field that contains serialized JSON,
+adding the <code class="docutils literal"><span class="pre">dict</span></code> cast to that attribute will automatically deserialize the attribute
+to a dictionary when you access it on your model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">__casts__</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="s1">&#39;dict&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, when you utilize the model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># options is a dict</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">options</span>
+
+<span class="c1"># options is automatically serialized back to JSON</span>
+<span class="n">user</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-events">
+<h2>Model events<a class="headerlink" href="#model-events" title="Permalink to this headline">¶</a></h2>
+<p>Orator models fire several events, allowing you to hook into various points in
+the model’s lifecycle using the following methods:
+<code class="docutils literal"><span class="pre">creating</span></code>, <code class="docutils literal"><span class="pre">created</span></code>, <code class="docutils literal"><span class="pre">updating</span></code>, <code class="docutils literal"><span class="pre">updated</span></code>, <code class="docutils literal"><span class="pre">saving</span></code>, <code class="docutils literal"><span class="pre">saved</span></code>, <code class="docutils literal"><span class="pre">deleting</span></code>, <code class="docutils literal"><span class="pre">deleted</span></code>,
+<code class="docutils literal"><span class="pre">restoring</span></code>, <code class="docutils literal"><span class="pre">restored</span></code>.</p>
+<p>Whenever a new item is saved for the first time, the <code class="docutils literal"><span class="pre">creating</span></code> and <code class="docutils literal"><span class="pre">created</span></code> events will fire.
+If an item is not new and the <code class="docutils literal"><span class="pre">save</span></code> method is called, the <code class="docutils literal"><span class="pre">updating</span></code> / <code class="docutils literal"><span class="pre">updated</span></code> events will fire.
+In both cases, the <code class="docutils literal"><span class="pre">saving</span></code> / <code class="docutils literal"><span class="pre">saved</span></code> events will fire.</p>
+<div class="section" id="cancelling-save-operations-via-events">
+<h3>Cancelling save operations via events<a class="headerlink" href="#cancelling-save-operations-via-events" title="Permalink to this headline">¶</a></h3>
+<p>If <code class="docutils literal"><span class="pre">False</span></code> is returned from the <code class="docutils literal"><span class="pre">creating</span></code>, <code class="docutils literal"><span class="pre">updating</span></code>, <code class="docutils literal"><span class="pre">saving</span></code>, or <code class="docutils literal"><span class="pre">deleting</span></code> events,
+the action will be cancelled:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">User</span><span class="o">.</span><span class="n">creating</span><span class="p">(</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="model-observers">
+<h2>Model observers<a class="headerlink" href="#model-observers" title="Permalink to this headline">¶</a></h2>
+<p>To consolidate the handling of model events, you can register a model observer.
+An observer class can have methods that correspond to the various model events.
+For example, <code class="docutils literal"><span class="pre">creating</span></code>, <code class="docutils literal"><span class="pre">updating</span></code>, <code class="docutils literal"><span class="pre">saving</span></code> methods can be on an observer,
+in addition to any other model event name.</p>
+<p>So, for example, a model observer might look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UserObserver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">saving</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+        <span class="c1"># ...</span>
+
+    <span class="k">def</span> <span class="nf">saved</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+        <span class="c1"># ...</span>
+</pre></div>
+</div>
+<p>You can register an observer instance using the <code class="docutils literal"><span class="pre">observe</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">User</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">UserObserver</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-to-dictionaries-json">
+<h2>Converting to dictionaries / JSON<a class="headerlink" href="#converting-to-dictionaries-json" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="converting-a-model-to-a-dictionary">
+<h3>Converting a model to a dictionary<a class="headerlink" href="#converting-a-model-to-a-dictionary" title="Permalink to this headline">¶</a></h3>
+<p>When building JSON APIs, you may often need to convert your models and relationships to dictionaries or JSON.
+So, Orator includes methods for doing so. To convert a model and its loaded relationship to a dictionary,
+you may use the <code class="docutils literal"><span class="pre">serialize</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="s1">&#39;roles&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+<span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that entire collections of models can also be converted to dictionaries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">User</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-a-model-to-json">
+<h3>Converting a model to JSON<a class="headerlink" href="#converting-a-model-to-json" title="Permalink to this headline">¶</a></h3>
+<p>To convert a model to JSON, you can use the <code class="docutils literal"><span class="pre">to_json</span></code> method!</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hiding-attributes-from-dictionary-or-json-conversion">
+<h3>Hiding attributes from dictionary or JSON conversion<a class="headerlink" href="#hiding-attributes-from-dictionary-or-json-conversion" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you may wish to limit the attributes that are included in you model’s dictionary or JSON form,
+such as passwords. To do so, add a <code class="docutils literal"><span class="pre">__hidden__</span></code> property definition to you model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+
+    <span class="n">__hidden__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Alternatively, you may use the <code class="docutils literal"><span class="pre">__visible__</span></code> property to define a whitelist:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">__visible__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="appendable-attributes">
+<h3>Appendable attributes<a class="headerlink" href="#appendable-attributes" title="Permalink to this headline">¶</a></h3>
+<p>Occasionally, you may need to add dictionary attributes that do not have a corresponding column in your database.
+To do so, simply define an <code class="docutils literal"><span class="pre">accessor</span></code> for the value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@accessor</span>
+    <span class="k">def</span> <span class="nf">is_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_attribute</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span>
+</pre></div>
+</div>
+<p>Once you have created the accessor, just add the value to the <code class="docutils literal"><span class="pre">__appends__</span></code> property on the model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">__append__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_admin&#39;</span><span class="p">]</span>
+
+    <span class="nd">@accessor</span>
+    <span class="k">def</span> <span class="nf">is_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_attribute</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span>
+</pre></div>
+</div>
+<p>Once the attribute has been added to the <code class="docutils literal"><span class="pre">__appends__</span></code> list, it will be included in both the model’s dictionary and JSON forms.
+Attributes in the <code class="docutils literal"><span class="pre">__appends__</span></code> list respect the <code class="docutils literal"><span class="pre">__visible__</span></code> and <code class="docutils literal"><span class="pre">__hidden__</span></code> configuration on the model.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="validations.html" class="btn btn-neutral float-right" title="Validations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="query_builder.html" class="btn btn-neutral" title="Query Builder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, shanbay.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

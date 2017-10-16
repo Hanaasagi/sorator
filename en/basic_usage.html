@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Basic Usage &mdash; sorator 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sorator 0.9 documentation" href="index.html"/>
+        <link rel="next" title="Query Builder" href="query_builder.html"/>
+        <link rel="prev" title="Installation" href="installation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sorator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-write-connections">Read / Write connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-queries">Running queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-select-query">Running a select query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-an-insert-statement">Running an insert statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-an-update-statement">Running an update statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-delete-statement">Running a delete statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-general-statement">Running a general statement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-transactions">Database transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-connections">Accessing connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#query-logging">Query logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-log-messages">Customizing log messages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="query_builder.html">Query Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orm.html">ORM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validations.html">Validations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_builder.html">Schema Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seeding.html">Seeding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sorator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Basic Usage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/basic_usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="basic-usage">
+<span id="basicusage"></span><h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>All you need to get you started is the configuration describing your database connections
+and passing it to a <code class="docutils literal"><span class="pre">DatabaseManager</span></code> instance.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator</span> <span class="kn">import</span> <span class="n">DatabaseManager</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;mysql&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;database&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">DatabaseManager</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have multiple databases configured you can specify which one is the default:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mysql&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;database&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Changed in version 0.8.0:</p>
+<p class="last">For MySQL and PostgreSQL, the connectors are configured
+to return unicode strings. If you want to use the previous behavior just set the
+use_unicode configuration option to False.</p>
+</div>
+</div>
+<div class="section" id="read-write-connections">
+<span id="id1"></span><h2>Read / Write connections<a class="headerlink" href="#read-write-connections" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you may wish to use one database connection for SELECT statements,
+and another for INSERT, UPDATE, and DELETE statements. Orator makes this easy,
+and the proper connections will always be used whether you use raw queries, the query
+builder or the actual ORM</p>
+<p>Here is an example of how read / write connections should be configured:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;mysql&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;read&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.1.1&#39;</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;write&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.1.2&#39;</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;database&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that two keys have been added to the configuration dictionary: <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">write</span></code>.
+Both of these keys have dictionary values containing a single key: <code class="docutils literal"><span class="pre">host</span></code>.
+The rest of the database options for the <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">write</span></code> connections
+will be merged from the main <code class="docutils literal"><span class="pre">mysql</span></code> dictionary. So, you only need to place items
+in the <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">write</span></code> dictionaries if you wish to override the values in the main dictionary.
+So, in this case, <code class="docutils literal"><span class="pre">192.168.1.1</span></code> will be used as the “read” connection, while <code class="docutils literal"><span class="pre">192.168.1.2</span></code>
+will be used as the “write” connection. The database credentials, prefix, character set,
+and all other options in the main <code class="docutils literal"><span class="pre">mysql</span></code> dictionary will be shared across both connections.</p>
+</div>
+<div class="section" id="running-queries">
+<h2>Running queries<a class="headerlink" href="#running-queries" title="Permalink to this headline">¶</a></h2>
+<p>Once you have configured your database connection, you can run queries.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Changed in version 0.9:</p>
+<p>The following examples use the qmark syntax for parameter binding.
+In previous versions of Orator, you had to adapt it to the parameter style of
+the underlying backend package. Now, you can set use_qmark to True in your
+configuration to allow the qmark syntax for all packages, making Orator trully
+database agnostic.</p>
+<p class="last">This will be the default in the next major version.</p>
+</div>
+<div class="section" id="running-a-select-query">
+<h3>Running a select query<a class="headerlink" href="#running-a-select-query" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;select * from users where id = ?&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">select</span></code> method will always return a list of results.</p>
+</div>
+<div class="section" id="running-an-insert-statement">
+<h3>Running an insert statement<a class="headerlink" href="#running-an-insert-statement" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s1">&#39;insert into users (id, name) values (?, ?)&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-an-update-statement">
+<h3>Running an update statement<a class="headerlink" href="#running-an-update-statement" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;update users set votes = 100 where name = ?&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;John&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-a-delete-statement">
+<h3>Running a delete statement<a class="headerlink" href="#running-a-delete-statement" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;delete from users&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">update</span></code> and <code class="docutils literal"><span class="pre">delete</span></code> statements return the number of rows affected by the operation.</p>
+</div>
+</div>
+<div class="section" id="running-a-general-statement">
+<h3>Running a general statement<a class="headerlink" href="#running-a-general-statement" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">statement</span><span class="p">(</span><span class="s1">&#39;drop table users&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="database-transactions">
+<h2>Database transactions<a class="headerlink" href="#database-transactions" title="Permalink to this headline">¶</a></h2>
+<p>To run a set of operations within a database transaction, you can use the <code class="docutils literal"><span class="pre">transaction</span></code> method
+which is a context manager:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">votes</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Any exception thrown within a transaction block will cause the transaction to be rolled back
+automatically.</p>
+<p>Sometimes you may need to start a transaction yourself:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can rollback a transaction with the <code class="docutils literal"><span class="pre">rollback</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also commit a transaction via the <code class="docutils literal"><span class="pre">commit</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">By default, all underlying DBAPI connections are set to be in autocommit mode
+meaning that you don’t need to explicitly commit after each operation.</p>
+</div>
+</div>
+<div class="section" id="accessing-connections">
+<h2>Accessing connections<a class="headerlink" href="#accessing-connections" title="Permalink to this headline">¶</a></h2>
+<p>When using multiple connections, you can access them via the <code class="docutils literal"><span class="pre">connection()</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">connection</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You also can access the raw, underlying dbapi connection instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sometimes, you may need to reconnect to a given database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">reconnect</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you need to disconnect from the given database, use the <code class="docutils literal"><span class="pre">disconnect</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-logging">
+<h2>Query logging<a class="headerlink" href="#query-logging" title="Permalink to this headline">¶</a></h2>
+<p>Orator can log all queries that are executed.
+By default, this is turned off to avoid unnecessary overhead, but if you want to activate it
+you can either add a <code class="docutils literal"><span class="pre">log_queries</span></code> key to the config dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;mysql&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;database&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;log_queries&#39;</span><span class="p">:</span> <span class="bp">True</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>or activate it later on:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">enable_query_log</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, the logger <code class="docutils literal"><span class="pre">orator.connection.queries</span></code> will be logging queries at <strong>debug</strong> level:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>Executed SELECT COUNT(*) AS aggregate FROM &quot;users&quot; in 1.18ms
+
+Executed INSERT INTO &quot;users&quot; (&quot;email&quot;, &quot;name&quot;, &quot;updated_at&quot;) VALUES (&#39;foo@bar.com&#39;, &#39;foo&#39;, &#39;2015-04-01T22:59:25.810216&#39;::timestamp) RETURNING &quot;id&quot; in 3.6ms
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>These log messages above are those logged for <strong>MySQL</strong> and <strong>PostgreSQL</strong> connections which support
+displaying full request sent to the database.
+For <strong>SQLite</strong> connections, the format is as follows:</p>
+<div class="last highlight-text"><div class="highlight"><pre><span></span>Executed (&#39;SELECT COUNT(*) AS aggregate FROM &quot;users&quot;&#39;, []) in 0.12ms
+</pre></div>
+</div>
+</div>
+<div class="section" id="customizing-log-messages">
+<h3>Customizing log messages<a class="headerlink" href="#customizing-log-messages" title="Permalink to this headline">¶</a></h3>
+<p>Each log record sent by the logger comes with the <code class="docutils literal"><span class="pre">query</span></code> and <code class="docutils literal"><span class="pre">elapsed_time</span></code> keywords so that
+you can customize the log message:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;orator.connection.queries&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span>
+    <span class="s1">&#39;It took </span><span class="si">%(elapsed_time)s</span><span class="s1">ms to execute the query </span><span class="si">%(query)s</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+
+<span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="query_builder.html" class="btn btn-neutral float-right" title="Query Builder" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, shanbay.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

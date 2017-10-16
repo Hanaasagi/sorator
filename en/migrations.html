@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Migrations &mdash; sorator 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sorator 0.9 documentation" href="index.html"/>
+        <link rel="next" title="Seeding" href="seeding.html"/>
+        <link rel="prev" title="Schema Builder" href="schema_builder.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sorator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query_builder.html">Query Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orm.html">ORM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validations.html">Validations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_builder.html">Schema Builder</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Migrations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-migrations">Creating Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-migrations">Running Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rolling-back-migrations">Rolling back migrations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rollback-the-last-migration-operation">Rollback the last migration operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rollback-all-migrations">Rollback all migrations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-migrations-status">Getting migrations status</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="seeding.html">Seeding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sorator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Migrations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/migrations.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="migrations">
+<span id="id1"></span><h1>Migrations<a class="headerlink" href="#migrations" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Changed in version 0.8.0:
+The command names have been changed</p>
+</div>
+<p>Migrations are a type of version control for your database.
+They allow a team to modify the database schema and stay up to date on the current schema state.
+Migrations are typically paired with the <a class="reference internal" href="schema_builder.html#schemabuilder"><span class="std std-ref">Schema Builder</span></a> to easily manage your database’s schema.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For the migrations to actually work, you need a configuration file describing your databases.
+It can be a <code class="docutils literal"><span class="pre">orator.yml</span></code> file or a <code class="docutils literal"><span class="pre">orator.py</span></code> located where the <code class="docutils literal"><span class="pre">orator</span></code> command is executed,
+or any other yaml or python file (these must then be explicitely specified when executing commands with the <code class="docutils literal"><span class="pre">--config\-c</span></code>)
+which follow the following requirements:</p>
+<ul class="simple">
+<li>yaml files must follow this structure:</li>
+</ul>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">databases</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">mysql</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">driver</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span>
+        <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+        <span class="l l-Scalar l-Scalar-Plain">database</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">database</span>
+        <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+        <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="s">&#39;&#39;</span>
+        <span class="l l-Scalar l-Scalar-Plain">prefix</span><span class="p p-Indicator">:</span> <span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>python files must follow this structure</li>
+</ul>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;mysql&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;database&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Every migrations command accepts a <code class="docutils literal"><span class="pre">--database/-d</span></code> option to specify the database.</p>
+</div>
+<div class="section" id="creating-migrations">
+<h2>Creating Migrations<a class="headerlink" href="#creating-migrations" title="Permalink to this headline">¶</a></h2>
+<p>To create a migration, you can use the <code class="docutils literal"><span class="pre">make:migration</span></code> command on the Orator CLI:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>orator make:migration create_users_table
+</pre></div>
+</div>
+<p>This will create a migration file that looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.migrations</span> <span class="kn">import</span> <span class="n">Migration</span>
+
+
+<span class="k">class</span> <span class="nc">CreateTableUsers</span><span class="p">(</span><span class="n">Migration</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revert the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>By default, the migration will be placed in a <code class="docutils literal"><span class="pre">migrations</span></code> folder relative to where the command has been executed,
+and will contain a timestamp which allows the framework to determine the order of the migrations.</p>
+<p>If you want the migrations to be stored in another folder, use the <code class="docutils literal"><span class="pre">--path/-p</span></code> option:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>orator make:migration create_users_table -p my/path/to/migrations
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">--table</span></code> and <code class="docutils literal"><span class="pre">--create</span></code> options can also be used to indicate the name of the table,
+and whether the migration will be creating a new table:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>orator make:migration add_votes_to_users_table --table<span class="o">=</span>users
+
+orator make:migration create_users_table --table<span class="o">=</span>users --create
+</pre></div>
+</div>
+<p>These commands would respectively create the following migrations:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.migrations</span> <span class="kn">import</span> <span class="n">Migration</span>
+
+
+<span class="k">class</span> <span class="nc">AddVotesToUsersTable</span><span class="p">(</span><span class="n">Migration</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revert the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+            <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.migrations</span> <span class="kn">import</span> <span class="n">Migration</span>
+
+
+<span class="k">class</span> <span class="nc">CreateTableUsers</span><span class="p">(</span><span class="n">Migration</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">increments</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">timestamps</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revert the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">Migration</span></code> instances have a <code class="docutils literal"><span class="pre">db</span></code> attribute which is an instance of the current
+<code class="docutils literal"><span class="pre">Connection</span></code>.</p>
+</div>
+</div>
+<div class="section" id="running-migrations">
+<h2>Running Migrations<a class="headerlink" href="#running-migrations" title="Permalink to this headline">¶</a></h2>
+<p>To run all outstanding migrations, just use the <code class="docutils literal"><span class="pre">migrate</span></code> command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>orator migrate
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>By default, all migrations are run inside a transaction.
+If you want queries to be executed directly just set the <code class="docutils literal"><span class="pre">transactional</span></code> attribute to <code class="docutils literal"><span class="pre">False</span></code>. You
+then must explicitely declare the transactions:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CreateTableUsers</span><span class="p">(</span><span class="n">Migration</span><span class="p">):</span>
+
+    <span class="n">transactional</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">table</span><span class="p">:</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">increments</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">timestamps</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revert the migrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="rolling-back-migrations">
+<h2>Rolling back migrations<a class="headerlink" href="#rolling-back-migrations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="rollback-the-last-migration-operation">
+<h3>Rollback the last migration operation<a class="headerlink" href="#rollback-the-last-migration-operation" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>orator migrate:rollback
+</pre></div>
+</div>
+</div>
+<div class="section" id="rollback-all-migrations">
+<h3>Rollback all migrations<a class="headerlink" href="#rollback-all-migrations" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>orator migrate:reset
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="getting-migrations-status">
+<h2>Getting migrations status<a class="headerlink" href="#getting-migrations-status" title="Permalink to this headline">¶</a></h2>
+<p>To see the status of the migrations, just use the <code class="docutils literal"><span class="pre">migrate:status</span></code> command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>orator migrate:status
+</pre></div>
+</div>
+<p>This would output something like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>+----------------------------------------------------+------+
+<span class="p">|</span> Migration                                          <span class="p">|</span> Ran? <span class="p">|</span>
++----------------------------------------------------+------+
+<span class="p">|</span> 2015_05_02_04371430559457_create_users_table       <span class="p">|</span> Yes  <span class="p">|</span>
+<span class="p">|</span> 2015_05_04_02361430725012_add_votes_to_users_table <span class="p">|</span> No   <span class="p">|</span>
++----------------------------------------------------+------+
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="seeding.html" class="btn btn-neutral float-right" title="Seeding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="schema_builder.html" class="btn btn-neutral" title="Schema Builder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, shanbay.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

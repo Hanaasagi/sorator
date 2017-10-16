@@ -1,0 +1,658 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Query Builder &mdash; sorator 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sorator 0.9 documentation" href="index.html"/>
+        <link rel="next" title="ORM" href="orm.html"/>
+        <link rel="prev" title="Basic Usage" href="basic_usage.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sorator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Query Builder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selects">Selects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-all-row-from-a-table">Retrieving all row from a table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chunking-results-from-a-table">Chunking results from a table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-a-single-row-from-a-table">Retrieving a single row from a table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-a-single-column-from-a-row">Retrieving a single column from a row</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-a-list-of-column-values">Retrieving a list of column values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-a-select-clause">Specifying a select clause</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-a-select-clause-to-an-existing-query">Adding a select clause to an existing query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-where-operators">Using where operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-statements">Or statements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-where-between">Using Where Between</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-where-not-between">Using Where Not Between</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-where-in">Using Where In</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-where-null-to-find-records-with-null-values">Using Where Null to find records with null values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#order-by-group-by-and-having">Order by, group by and having</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#offset-and-limit">Offset and limit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#joins">Joins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-join-statement">Basic join statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#left-join-statement">Left join statement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-where">Advanced where</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parameter-grouping">Parameter grouping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exists-statement">Exists statement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#aggregates">Aggregates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#raw-expressions">Raw expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inserts">Inserts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#insert-records-into-a-table">Insert records into a table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inserting-records-into-a-table-with-an-auto-incrementing-id">Inserting records into a table with an auto-incrementing ID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inserting-multiple-record-into-a-table">Inserting multiple record into a table</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#updates">Updates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#updating-records">Updating records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#incrementing-or-decrementing-the-value-of-a-column">Incrementing or decrementing the value of a column</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#deletes">Deletes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-records">Deleting records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delete-all-records">Delete all records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#truncate">Truncate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#unions">Unions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pessimistic-locking">Pessimistic locking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="orm.html">ORM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validations.html">Validations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_builder.html">Schema Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seeding.html">Seeding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sorator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Query Builder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/query_builder.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="query-builder">
+<span id="querybuilder"></span><h1>Query Builder<a class="headerlink" href="#query-builder" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The database query builder provides a fluent interface to create and run database queries.
+It can be used to perform most database operations in your application, and works on all supported database systems.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since Orator uses DBAPI packages under the hood, there is no need to clean
+parameters passed as bindings.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The underlying DBAPI connections are automatically configured to return dictionaries
+rather than the default tuple representation.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>New in version 0.9: The returned rows also supports accessing the column values by attribute:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+<span class="c1"># is equivalent to</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Changed in version 0.9: The returned rows will now be Collections to be more
+consistent with the behavior of the ORM.</p>
+</div>
+</div>
+<div class="section" id="selects">
+<h2>Selects<a class="headerlink" href="#selects" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="retrieving-all-row-from-a-table">
+<h3>Retrieving all row from a table<a class="headerlink" href="#retrieving-all-row-from-a-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="chunking-results-from-a-table">
+<h3>Chunking results from a table<a class="headerlink" href="#chunking-results-from-a-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">users</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+        <span class="c1"># ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-a-single-row-from-a-table">
+<h3>Retrieving a single row from a table<a class="headerlink" href="#retrieving-a-single-row-from-a-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-a-single-column-from-a-row">
+<h3>Retrieving a single column from a row<a class="headerlink" href="#retrieving-a-single-column-from-a-row" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-a-list-of-column-values">
+<h3>Retrieving a list of column values<a class="headerlink" href="#retrieving-a-list-of-column-values" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">roles</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;roles&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lists</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method will return a list of role titles. It can return a dictionary
+if you pass an extra key parameter.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">roles</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;roles&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lists</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="specifying-a-select-clause">
+<h3>Specifying a select clause<a class="headerlink" href="#specifying-a-select-clause" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;name as user_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-a-select-clause-to-an-existing-query">
+<h3>Adding a select clause to an existing query<a class="headerlink" href="#adding-a-select-clause-to-an-existing-query" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">add_select</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-where-operators">
+<h3>Using where operators<a class="headerlink" href="#using-where-operators" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="or-statements">
+<h3>Or statements<a class="headerlink" href="#or-statements" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span><span class="o">.</span><span class="n">or_where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-where-between">
+<h3>Using Where Between<a class="headerlink" href="#using-where-between" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_between</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">])</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-where-not-between">
+<h3>Using Where Not Between<a class="headerlink" href="#using-where-not-between" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_not_between</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">])</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-where-in">
+<h3>Using Where In<a class="headerlink" href="#using-where-in" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_in</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_not_in</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-where-null-to-find-records-with-null-values">
+<h3>Using Where Null to find records with null values<a class="headerlink" href="#using-where-null-to-find-records-with-null-values" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_null</span><span class="p">(</span><span class="s1">&#39;updated_at&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="order-by-group-by-and-having">
+<h3>Order by, group by and having<a class="headerlink" href="#order-by-group-by-and-having" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;desc&#39;</span><span class="p">)</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">having</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="offset-and-limit">
+<h3>Offset and limit<a class="headerlink" href="#offset-and-limit" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="joins">
+<h2>Joins<a class="headerlink" href="#joins" title="Permalink to this headline">¶</a></h2>
+<p>The query builder can also be used to write join statements.</p>
+<div class="section" id="basic-join-statement">
+<h3>Basic join statement<a class="headerlink" href="#basic-join-statement" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;contacts&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;contacts.user_id&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.user_id&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;users.id&#39;</span><span class="p">,</span> <span class="s1">&#39;contacts.phone&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.price&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="left-join-statement">
+<h3>Left join statement<a class="headerlink" href="#left-join-statement" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">left_join</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;posts.user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also specify more advance join clauses:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">clause</span> <span class="o">=</span> <span class="n">JoinClause</span><span class="p">(</span><span class="s1">&#39;contacts&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;users.id&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;contacts.user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">or_on</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you would like to use a “where” style clause on your joins,
+you may use the where and orWhere methods on a join.
+Instead of comparing two columns, these methods will compare the column against a value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">clause</span> <span class="o">=</span> <span class="n">JoinClause</span><span class="p">(</span><span class="s1">&#39;contacts&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;users.id&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;contacts.user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;contacts.user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="advanced-where">
+<h2>Advanced where<a class="headerlink" href="#advanced-where" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you may need to create more advanced where clauses such as “where exists” or nested parameter groupings.
+It is pretty easy to do with the Orator query builder</p>
+<div class="section" id="parameter-grouping">
+<h3>Parameter grouping<a class="headerlink" href="#parameter-grouping" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">or_where</span><span class="p">(</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;!=&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The query above will produce the following SQL:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="k">WHERE</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;John&#39;</span> <span class="k">OR</span> <span class="p">(</span><span class="n">votes</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="k">AND</span> <span class="n">title</span> <span class="o">!=</span> <span class="s1">&#39;Admin&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exists-statement">
+<h3>Exists statement<a class="headerlink" href="#exists-statement" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_exists</span><span class="p">(</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">where_raw</span><span class="p">(</span><span class="s1">&#39;order.user_id = users.id&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The query above will produce the following SQL:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span>
+<span class="k">WHERE</span> <span class="k">EXISTS</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="mi">1</span> <span class="k">FROM</span> <span class="n">orders</span> <span class="k">WHERE</span> <span class="n">orders</span><span class="p">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">users</span><span class="p">.</span><span class="n">id</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="aggregates">
+<h2>Aggregates<a class="headerlink" href="#aggregates" title="Permalink to this headline">¶</a></h2>
+<p>The query builder also provides a variety of aggregate methods, `
+such as <code class="docutils literal"><span class="pre">count</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, <code class="docutils literal"><span class="pre">min</span></code>, <code class="docutils literal"><span class="pre">avg</span></code>, and <code class="docutils literal"><span class="pre">sum</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+<span class="n">price</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">)</span>
+
+<span class="n">price</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">)</span>
+
+<span class="n">price</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">)</span>
+
+<span class="n">total</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="raw-expressions">
+<h2>Raw expressions<a class="headerlink" href="#raw-expressions" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you may need to use a raw expression in a query.
+These expressions will be injected into the query as strings, so be careful not to create any SQL injection points!
+To create a raw expression, you may use the <code class="docutils literal"><span class="pre">raw()</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="s1">&#39;count(*) as user_count, status&#39;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;!=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inserts">
+<h2>Inserts<a class="headerlink" href="#inserts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="insert-records-into-a-table">
+<h3>Insert records into a table<a class="headerlink" href="#insert-records-into-a-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;foo@bar.com&#39;</span><span class="p">,</span> <span class="n">votes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span>
+    <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;foo@bar.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;votes&#39;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is important to note that there is two notations available.
+The reason is quite simple: the dictionary notation, though a little less practical, is here to handle
+columns names which cannot be passed as keywords arguments.</p>
+</div>
+</div>
+<div class="section" id="inserting-records-into-a-table-with-an-auto-incrementing-id">
+<h3>Inserting records into a table with an auto-incrementing ID<a class="headerlink" href="#inserting-records-into-a-table-with-an-auto-incrementing-id" title="Permalink to this headline">¶</a></h3>
+<p>If the table has an auto-incrementing id, use <code class="docutils literal"><span class="pre">insert_get_id</span></code> to insert a record and retrieve the id:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">insert_get_id</span><span class="p">({</span>
+    <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;foo@bar.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;votes&#39;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inserting-multiple-record-into-a-table">
+<h3>Inserting multiple record into a table<a class="headerlink" href="#inserting-multiple-record-into-a-table" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">insert</span><span class="p">([</span>
+    <span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;foo@bar.com&#39;</span><span class="p">,</span> <span class="s1">&#39;votes&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;bar@baz.com&#39;</span><span class="p">,</span> <span class="s1">&#39;votes&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="updates">
+<h2>Updates<a class="headerlink" href="#updates" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="updating-records">
+<h3>Updating records<a class="headerlink" href="#updating-records" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">votes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;votes&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Like the <code class="docutils literal"><span class="pre">insert</span></code> statement, there is two notations available.
+The reason is quite simple: the dictionary notation, though a little less practical, is here to handle
+columns names which cannot be passed as keywords arguments.</p>
+</div>
+</div>
+<div class="section" id="incrementing-or-decrementing-the-value-of-a-column">
+<h3>Incrementing or decrementing the value of a column<a class="headerlink" href="#incrementing-or-decrementing-the-value-of-a-column" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">)</span>  <span class="c1"># Increment the value by 1</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1"># Increment the value by 5</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decrement</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">)</span>  <span class="c1"># Decrement the value by 1</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decrement</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1"># Decrement the value by 5</span>
+</pre></div>
+</div>
+<p>You can also specify additional columns to update:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;John&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="deletes">
+<h2>Deletes<a class="headerlink" href="#deletes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="deleting-records">
+<h3>Deleting records<a class="headerlink" href="#deleting-records" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-all-records">
+<h3>Delete all records<a class="headerlink" href="#delete-all-records" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="truncate">
+<h3>Truncate<a class="headerlink" href="#truncate" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="unions">
+<h2>Unions<a class="headerlink" href="#unions" title="Permalink to this headline">¶</a></h2>
+<p>The query builder provides a quick and easy way to “union” two queries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">first</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_null</span><span class="p">(</span><span class="s1">&#39;first_name&#39;</span><span class="p">)</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where_null</span><span class="p">(</span><span class="s1">&#39;last_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">first</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">union_all</span></code> method is also available.</p>
+</div>
+<div class="section" id="pessimistic-locking">
+<h2>Pessimistic locking<a class="headerlink" href="#pessimistic-locking" title="Permalink to this headline">¶</a></h2>
+<p>The query builder includes a few functions to help you do “pessimistic locking” on your SELECT statements.</p>
+<p>To run the SELECT statement with a “shared lock”, you may use the <code class="docutils literal"><span class="pre">shared_lock</span></code> method on a query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">shared_lock</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To “lock for update” on a SELECT statement, you may use the <code class="docutils literal"><span class="pre">lock_for_update</span></code> method on a query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;votes&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">lock_for_update</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="orm.html" class="btn btn-neutral float-right" title="ORM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="basic_usage.html" class="btn btn-neutral" title="Basic Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, shanbay.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

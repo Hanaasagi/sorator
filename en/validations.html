@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Validations &mdash; sorator 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sorator 0.9 documentation" href="index.html"/>
+        <link rel="next" title="Pagination" href="pagination.html"/>
+        <link rel="prev" title="ORM" href="orm.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sorator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query_builder.html">Query Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orm.html">ORM</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Validations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#validator-usage-listing">Validator Usage Listing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#presencevalidator">PresenceValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inclusionvalidator">InclusionValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exclusionvalidator">ExclusionValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#patternvalidator">PatternValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lengthvalidator">LengthValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numericalityvalidator">NumericalityValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uniquenessvalidator">UniquenessValidator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rangevalidator">RangeValidator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_builder.html">Schema Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seeding.html">Seeding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sorator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Validations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/validations.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="validations">
+<span id="id1"></span><h1>Validations<a class="headerlink" href="#validations" title="Permalink to this headline">¶</a></h1>
+<p>Validations are used to ensure that only valid data is saved into your database.
+<code class="docutils literal"><span class="pre">orator.orm.validators</span></code> provides some pre-defined validation helpers. You can
+use directly inside your model class definitions. For example</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="nd">@validates</span><span class="p">(</span><span class="n">presence</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># more validate logic</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">validates</span></code> is a Python decorator. And it’s parameters need to be validator name.
+Here key/value are the validator name and corresponding validator class.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;presence&#39;</span><span class="p">:</span> <span class="n">PresenceValidator</span><span class="p">,</span>
+    <span class="s1">&#39;inclusion&#39;</span><span class="p">:</span> <span class="n">InclusionValidator</span><span class="p">,</span>
+    <span class="s1">&#39;exclusion&#39;</span><span class="p">:</span> <span class="n">ExclusionValidator</span><span class="p">,</span>
+    <span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="n">PatternValidator</span><span class="p">,</span>
+    <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="n">LengthValidator</span><span class="p">,</span>
+    <span class="s1">&#39;numericality&#39;</span><span class="p">:</span> <span class="n">NumericalityValidator</span><span class="p">,</span>
+    <span class="s1">&#39;uniqueness&#39;</span><span class="p">:</span> <span class="n">UniquenessValidator</span><span class="p">,</span>
+    <span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="n">RangeValidator</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Besides, you can directly call the validator instance(<code class="docutils literal"><span class="pre">__call__</span></code> method) to validate</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">orator.orm</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">validate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">validator</span> <span class="o">=</span> <span class="n">PresenceValidator</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">validator</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="c1"># will raise ValidationError if not valid</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>NOTE: UniquenessValidator is special. Because it need the decorated function’s meta data *</li>
+</ul>
+<div class="section" id="validator-usage-listing">
+<h2>Validator Usage Listing<a class="headerlink" href="#validator-usage-listing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="presencevalidator">
+<h3>PresenceValidator<a class="headerlink" href="#presencevalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates that the specified value are not empty.</p>
+<p>following case will be considered blank:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">None</span></code></li>
+<li><code class="docutils literal"><span class="pre">''</span></code> empty string</li>
+<li><code class="docutils literal"><span class="pre">'</span>&#160;&#160;&#160; <span class="pre">'</span></code> string only have whitespace</li>
+</ul>
+<p>example:</p>
+<div class="highlight-Python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="n">presence</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inclusionvalidator">
+<h3>InclusionValidator<a class="headerlink" href="#inclusionvalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates that the value are included in a given set.</p>
+<p>example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="n">inclusion</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;weiss&#39;</span><span class="p">,</span> <span class="s1">&#39;blake&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">validate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The set should be a object that implements <code class="docutils literal"><span class="pre">__contains__</span></code> method, for example
+<code class="docutils literal"><span class="pre">list</span></code>, <code class="docutils literal"><span class="pre">tuple</span></code>, <code class="docutils literal"><span class="pre">set</span></code> .etc.</p>
+</div>
+<div class="section" id="exclusionvalidator">
+<h3>ExclusionValidator<a class="headerlink" href="#exclusionvalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates that the value are not included in a
+given set.</p>
+<p>example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="n">exclusion</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;weiss&#39;</span><span class="p">,</span> <span class="s1">&#39;blake&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">validate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The set should be a object that implements <code class="docutils literal"><span class="pre">__contains__</span></code> method, for example
+<code class="docutils literal"><span class="pre">list</span></code>, <code class="docutils literal"><span class="pre">tuple</span></code>, <code class="docutils literal"><span class="pre">set</span></code> .etc.</p>
+</div>
+<div class="section" id="patternvalidator">
+<h3>PatternValidator<a class="headerlink" href="#patternvalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates the value by testing whether they match a
+given regular expression</p>
+<p>example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^[1-9]\d*$&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lengthvalidator">
+<h3>LengthValidator<a class="headerlink" href="#lengthvalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates the length of the values.</p>
+<p>example: check the length <strong>greater than</strong> 0 and <strong>less than</strong> 10:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;minimum&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;maximum&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">validate_phone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The parameter should be a dict, and the key should be following combination</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">minimum</span></code></li>
+<li><code class="docutils literal"><span class="pre">maximum</span></code></li>
+<li><code class="docutils literal"><span class="pre">in</span></code></li>
+<li><code class="docutils literal"><span class="pre">eq</span></code></li>
+</ul>
+</div>
+<div class="section" id="numericalityvalidator">
+<h3>NumericalityValidator<a class="headerlink" href="#numericalityvalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates that your value is numeric.
+By default, it will match an optional sign followed by an integral or floating point number.</p>
+<p>example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="n">numericality</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>This validator is special. It can accept two kind of arguments, <code class="docutils literal"><span class="pre">bool</span></code> or <code class="docutils literal"><span class="pre">dict</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">bool</span></code> type arugument decide whether enable this validator</p>
+<p><code class="docutils literal"><span class="pre">dict</span></code> type arugment can have following key, and value is <code class="docutils literal"><span class="pre">bool</span></code> type</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">only_integer</span></code> value must be integer, not float point number</li>
+<li><code class="docutils literal"><span class="pre">even</span></code> value must be even</li>
+<li><code class="docutils literal"><span class="pre">odd</span></code> value must be odd</li>
+</ul>
+<p>for example <code class="docutils literal"><span class="pre">{'only_integer':</span> <span class="pre">True,</span> <span class="pre">'odd':</span> <span class="pre">True}</span></code></p>
+</div>
+<div class="section" id="uniquenessvalidator">
+<h3>UniquenessValidator<a class="headerlink" href="#uniquenessvalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates that the value is unique in the database</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="n">uniqueness</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>This validator will split the function name <code class="docutils literal"><span class="pre">validate_uid</span></code> and use the <code class="docutils literal"><span class="pre">uid</span></code>
+as database field, then execute <code class="docutils literal"><span class="pre">where_exists('uid',</span> <span class="pre">'=',</span> <span class="pre">value)</span></code> in database</p>
+</div>
+<div class="section" id="rangevalidator">
+<h3>RangeValidator<a class="headerlink" href="#rangevalidator" title="Permalink to this headline">¶</a></h3>
+<p>This validator validates that whether the value is in given interval.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@validates</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;gt&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;lt&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">validate_amount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The parameter should be <code class="docutils literal"><span class="pre">dict</span></code> type, and the key should be following combination</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">gt</span></code></li>
+<li><code class="docutils literal"><span class="pre">ge</span></code></li>
+<li><code class="docutils literal"><span class="pre">lt</span></code></li>
+<li><code class="docutils literal"><span class="pre">le</span></code></li>
+<li><code class="docutils literal"><span class="pre">eq</span></code></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pagination.html" class="btn btn-neutral float-right" title="Pagination" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="orm.html" class="btn btn-neutral" title="ORM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, shanbay.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
